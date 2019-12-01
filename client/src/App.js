@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
+import { Provider } from 'react-redux';
+import { CookiesProvider } from 'react-cookie';
+import AppRouter from './routes';
+import store from './store';
 import './style';
-
-import Button from '@material-ui/core/Button';
+import {I18nextProvider} from 'react-i18next';
+import i18n from './i18n';
+import 'antd/dist/antd.css';
 
 const App = () => {
-  const [greeting, setGreeting] = useState('');
-
-  const greetingServer = async () => {
-    const res = await fetch('http://localhost:5000/greeting');
-    const data = await res.json(); 
-    setGreeting(data.greeting);
-  }
-
   return (
-    <div className='App'>
-      <h1 className='greeting'>{greeting}</h1>
-      <Button className='button' variant='contained' color='primary' onClick={greetingServer}>Hello SERVER!!!</Button>
-    </div>
-  );
+    <CookiesProvider>  
+      <Provider store={ store }>
+        <I18nextProvider i18n={i18n}>
+          <AppRouter/>
+        </I18nextProvider>
+      </Provider>
+    </CookiesProvider>
+    )
 }
 
 export default App;
