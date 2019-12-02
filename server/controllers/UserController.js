@@ -49,14 +49,10 @@ exports.getAllUser = function (req, res, next) {
                 });
             }
 
-            const result = await userModel.getAllUser();
+            let result = await userModel.getAllUser();
 
             if (!result) {
-                res.json({
-                    returnCode: -3,
-                    returnMessage: "Cannot Get List User."
-                });
-                return;
+                result = [];
             }
 
             res.json({
@@ -91,7 +87,7 @@ exports.getOneUser = function (req, res, next) {
             if (!result) {
                 res.json({
                     returnCode: -3,
-                    returnMessage: "Cannot Get User's Info."
+                    returnMessage: "User Not Found"
                 });
                 return;
             }
