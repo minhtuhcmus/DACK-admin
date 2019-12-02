@@ -9,6 +9,7 @@ const passport = require('passport');
 const axios = require('axios');
 const authenRoute = require('./routes/AuthenRoute');
 const userRoute = require('./routes/UserRoute');
+const jwtUtil = require('./authentication/jwt');
 
 require('./authentication/passport');
 const app = express();
@@ -43,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 app.use('/', authenRoute);
-app.use('/api', userRoute);
+app.use('/api', jwtUtil.validateToken, userRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
