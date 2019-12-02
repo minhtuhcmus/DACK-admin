@@ -1,6 +1,7 @@
 const userModel = require('../models/User');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 exports.login = function (req, res, next) {
     passport.authenticate('local', {
@@ -150,20 +151,34 @@ exports.updateUser = async function (req, res, next) {
 exports.changePassword = async function (req, res, next) {
     try {
         const username = req.params.username;
-        const password = req.body.password;
+        const oldPassword = req.body.oldPassword;
+        const newPassword = req.body.newPassword;
 
-        const result = await userModel.changePassword(username, password);
-        if (result != null && result.affectedRows === 1) {
-            res.json({
-                returnCode: 1,
-                returnMessage: "Success"
-            });
-        } else {
-            res.json({
-                returnCode: 0,
-                returnMessage: "Exception. Retry Later."
-            });
-        }
+        const user = await userModel.getUser(username);
+
+        bcrypt.compare(oldPassword, user.password).then(async (compareRes) => {
+            if (!compareRes) {
+                return res.json({
+                    returnCode: -2,
+                    returnMessage: "Old Password Not Match"
+                });
+            }
+
+            const result = await userModel.changePassword(username, newPassword);
+            if (result != null && result.affectedRows === 1) {
+                res.json({
+                    returnCode: 1,
+                    returnMessage: "Success"
+                });
+            } else {
+                res.json({
+                    returnCode: 0,
+                    returnMessage: "Exception. Retry Later."
+                });
+            }
+        });
+
+
     } catch (e) {
         console.error(e);
         return res.json({
