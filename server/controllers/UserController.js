@@ -45,7 +45,7 @@ exports.getAllUser = function (req, res, next) {
             if (err || !user) {
                 return res.json({
                     returnCode: -1,
-                    returnMessage: "JWT không hợp lệ."
+                    returnMessage: "JWT Not Valid."
                 });
             }
 
@@ -53,22 +53,22 @@ exports.getAllUser = function (req, res, next) {
 
             if (!result) {
                 res.json({
-                    returnCode: 0,
-                    returnMessage: "Không Thể Lấy Danh Sách Người Dùng."
+                    returnCode: -3,
+                    returnMessage: "Cannot Get List User."
                 });
                 return;
             }
 
             res.json({
                 returnCode: 1,
-                returnMessage: "Thành Công",
+                returnMessage: "Success",
                 data: result
             })
         } catch (e) {
             console.error(e);
             return res.json({
                 returnCode: 0,
-                returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                returnMessage: "Exception. Retry Later."
             });
         }
     })(req, res, next);
@@ -82,7 +82,7 @@ exports.getOneUser = function (req, res, next) {
             if (err || !user) {
                 return res.json({
                     returnCode: -1,
-                    returnMessage: "JWT không hợp lệ."
+                    returnMessage: "JWT Not Valid."
                 });
             }
 
@@ -90,8 +90,8 @@ exports.getOneUser = function (req, res, next) {
 
             if (!result) {
                 res.json({
-                    returnCode: 0,
-                    returnMessage: "Không Thể Lấy Thông Tin Người Dùng."
+                    returnCode: -3,
+                    returnMessage: "Cannot Get User's Info."
                 });
                 return;
             }
@@ -100,14 +100,14 @@ exports.getOneUser = function (req, res, next) {
 
             return res.json({
                 returnCode: 1,
-                returnMessage: "Thành Công",
+                returnMessage: "Success",
                 data: result
             })
         } catch (e) {
             console.error(e);
             return res.json({
                 returnCode: 0,
-                returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                returnMessage: "Exception. Retry Later."
             });
         }
     })(req, res, next);
@@ -121,7 +121,7 @@ exports.createUser = function (req, res, next) {
             if (err || !user) {
                 return res.json({
                     returnCode: -1,
-                    returnMessage: "JWT không hợp lệ."
+                    returnMessage: "JWT Not Valid"
                 });
             }
 
@@ -130,8 +130,8 @@ exports.createUser = function (req, res, next) {
             const find = await userModel.getUser(newUser.username);
             if (find != null) {
                 res.json({
-                    returnCode: -1,
-                    returnMessage: "Username Đã Tồn Tại. Vui Lòng Chọn Username Khác."
+                    returnCode: -2,
+                    returnMessage: "Username Is Already Existed. Please Choose Another Username."
                 });
                 return;
             }
@@ -140,7 +140,7 @@ exports.createUser = function (req, res, next) {
             if (result != null && result.affectedRows === 1) {
                 res.json({
                     returnCode: 1,
-                    returnMessage: "Tạo Tài Khoản Thành Công."
+                    returnMessage: "Success"
                 });
             } else {
                 res.json({
@@ -152,7 +152,7 @@ exports.createUser = function (req, res, next) {
             console.error(e);
             return res.json({
                 returnCode: 0,
-                returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                returnMessage: "Exception. Retry Later."
             });
         }
     })(req, res, next);
@@ -166,7 +166,7 @@ exports.updateUser = function (req, res, next) {
             if (err || !user) {
                 return res.json({
                     returnCode: -1,
-                    returnMessage: "JWT không hợp lệ."
+                    returnMessage: "JWT Not Valid."
                 });
             }
             const username = req.params.username;
@@ -176,19 +176,19 @@ exports.updateUser = function (req, res, next) {
             if (result != null && result.affectedRows === 1) {
                 res.json({
                     returnCode: 1,
-                    returnMessage: "Cập Nhật Thành Công."
+                    returnMessage: "Success"
                 });
             } else {
                 res.json({
                     returnCode: 0,
-                    returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                    returnMessage: "Exception. Retry Later."
                 });
             }
         } catch (e) {
             console.error(e);
             return res.json({
                 returnCode: 0,
-                returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                returnMessage: "Exception. Retry Later."
             });
         }
     })(req, res, next);
@@ -202,7 +202,7 @@ exports.changePassword = function (req, res, next) {
             if (err || !user) {
                 return res.json({
                     returnCode: -1,
-                    returnMessage: "JWT không hợp lệ."
+                    returnMessage: "JWT Not Valid"
                 });
             }
             const username = req.params.username;
@@ -212,19 +212,19 @@ exports.changePassword = function (req, res, next) {
             if (result != null && result.affectedRows === 1) {
                 res.json({
                     returnCode: 1,
-                    returnMessage: "Đổi Mật Khẩu Thành Công."
+                    returnMessage: "Success"
                 });
             } else {
                 res.json({
                     returnCode: 0,
-                    returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                    returnMessage: "Exception. Retry Later."
                 });
             }
         } catch (e) {
             console.error(e);
             return res.json({
                 returnCode: 0,
-                returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                returnMessage: "Exception. Retry Later."
             });
         }
     })(req, res, next);
