@@ -95,7 +95,7 @@ exports.createUser = async function (req, res, next) {
         const find = await userModel.getUser(newUser.username);
         if (find != null) {
             res.json({
-                returnCode: -2,
+                returnCode: -4,
                 returnMessage: "Username Is Already Existed. Please Choose Another Username."
             });
             return;

@@ -25,15 +25,15 @@ passport.use(new LocalStrategy({
             .then(user => {
                 if (!user) {
                     return cb(null, false, {
-                        returnCode: -1,
-                        returnMessage: 'Không tìm thấy người dùng ' + username
+                        returnCode: -3,
+                        returnMessage: `User ${username} Not Found`
                     });
                 }
 
                 if (user.status === 0) {
                     return cb(null, false, {
-                        returnCode: -3,
-                        returnMessage: 'Tài khoản đã bị khóa'
+                        returnCode: -5,
+                        returnMessage: 'Account Has Been Blocked'
                     });
                 }
 
@@ -41,13 +41,13 @@ passport.use(new LocalStrategy({
                     if (!res) {
                         return cb(null, false, {
                             returnCode: -2,
-                            returnMessage: 'Sai mật khẩu'
+                            returnMessage: 'Wrong Password'
                         });
                     }
 
                     return cb(null, user, {
                         returnCode: 1,
-                        returnMessage: 'Đăng nhập thành công'
+                        returnMessage: 'Success'
                     });
                 });
             }).catch(err => cb(err));
