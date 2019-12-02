@@ -41,28 +41,36 @@ exports.getAllUser = function (req, res, next) {
     passport.authenticate('jwt', {
         session: false
     }, async (err, user, info) => {
-        if (err || !user) {
-            return res.json({
-                returnCode: -1,
-                returnMessage: "JWT không hợp lệ."
-            });
-        }
+        try {
+            if (err || !user) {
+                return res.json({
+                    returnCode: -1,
+                    returnMessage: "JWT không hợp lệ."
+                });
+            }
 
-        const result = await userModel.getAllUser();
+            const result = await userModel.getAllUser();
 
-        if (!result){
+            if (!result) {
+                res.json({
+                    returnCode: 0,
+                    returnMessage: "Không Thể Lấy Danh Sách Người Dùng."
+                });
+                return;
+            }
+
             res.json({
+                returnCode: 1,
+                returnMessage: "Thành Công",
+                data: result
+            })
+        } catch (e) {
+            console.error(e);
+            return res.json({
                 returnCode: 0,
-                returnMessage: "Không Thể Lấy Danh Sách Người Dùng."
+                returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
             });
-            return;
         }
-
-        res.json({
-            returnCode: 1,
-            returnMessage: "Thành Công",
-            data : result
-        })
     })(req, res, next);
 };
 
@@ -70,30 +78,38 @@ exports.getOneUser = function (req, res, next) {
     passport.authenticate('jwt', {
         session: false
     }, async (err, user, info) => {
-        if (err || !user) {
+        try {
+            if (err || !user) {
+                return res.json({
+                    returnCode: -1,
+                    returnMessage: "JWT không hợp lệ."
+                });
+            }
+
+            const result = await userModel.getUser(req.params.username);
+
+            if (!result) {
+                res.json({
+                    returnCode: 0,
+                    returnMessage: "Không Thể Lấy Thông Tin Người Dùng."
+                });
+                return;
+            }
+            delete result.password;
+            delete result.updDate;
+
             return res.json({
-                returnCode: -1,
-                returnMessage: "JWT không hợp lệ."
-            });
-        }
-
-        const result = await userModel.getUser(req.params.username);
-
-        if (!result){
-            res.json({
+                returnCode: 1,
+                returnMessage: "Thành Công",
+                data: result
+            })
+        } catch (e) {
+            console.error(e);
+            return res.json({
                 returnCode: 0,
-                returnMessage: "Không Thể Lấy Thông Tin Người Dùng."
+                returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
             });
-            return;
         }
-        delete result.password;
-        delete result.updDate;
-
-        return res.json({
-            returnCode: 1,
-            returnMessage: "Thành Công",
-            data : result
-        })
     })(req, res, next);
 };
 
@@ -101,32 +117,40 @@ exports.createUser = function (req, res, next) {
     passport.authenticate('jwt', {
         session: false
     }, async (err, user, info) => {
-        if (err || !user) {
+        try {
+            if (err || !user) {
+                return res.json({
+                    returnCode: -1,
+                    returnMessage: "JWT không hợp lệ."
+                });
+            }
+
+            const newUser = req.body;
+
+            const find = await userModel.getUser(newUser.username);
+            if (find != null) {
+                res.json({
+                    returnCode: -1,
+                    returnMessage: "Username Đã Tồn Tại. Vui Lòng Chọn Username Khác."
+                });
+                return;
+            }
+
+            const result = await userModel.createUser(newUser);
+            if (result != null && result.affectedRows === 1) {
+                res.json({
+                    returnCode: 1,
+                    returnMessage: "Tạo Tài Khoản Thành Công."
+                });
+            } else {
+                res.json({
+                    returnCode: 0,
+                    returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                });
+            }
+        } catch (e) {
+            console.error(e);
             return res.json({
-                returnCode: -1,
-                returnMessage: "JWT không hợp lệ."
-            });
-        }
-
-        const newUser = req.body;
-
-        const find = await userModel.getUser(newUser.username);
-        if (find != null) {
-            res.json({
-                returnCode: -1,
-                returnMessage: "Username Đã Tồn Tại. Vui Lòng Chọn Username Khác."
-            });
-            return;
-        }
-
-        const result = await userModel.createUser(newUser);
-        if (result != null && result.affectedRows === 1) {
-            res.json({
-                returnCode: 1,
-                returnMessage: "Tạo Tài Khoản Thành Công."
-            });
-        } else {
-            res.json({
                 returnCode: 0,
                 returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
             });
@@ -138,23 +162,31 @@ exports.updateUser = function (req, res, next) {
     passport.authenticate('jwt', {
         session: false
     }, async (err, user, info) => {
-        if (err || !user) {
-            return res.json({
-                returnCode: -1,
-                returnMessage: "JWT không hợp lệ."
-            });
-        }
-        const username = req.params.username;
-        const newUser = req.body;
+        try {
+            if (err || !user) {
+                return res.json({
+                    returnCode: -1,
+                    returnMessage: "JWT không hợp lệ."
+                });
+            }
+            const username = req.params.username;
+            const newUser = req.body;
 
-        const result = await userModel.updateUser(username, newUser);
-        if (result != null && result.affectedRows === 1) {
-            res.json({
-                returnCode: 1,
-                returnMessage: "Cập Nhật Thành Công."
-            });
-        } else {
-            res.json({
+            const result = await userModel.updateUser(username, newUser);
+            if (result != null && result.affectedRows === 1) {
+                res.json({
+                    returnCode: 1,
+                    returnMessage: "Cập Nhật Thành Công."
+                });
+            } else {
+                res.json({
+                    returnCode: 0,
+                    returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                });
+            }
+        } catch (e) {
+            console.error(e);
+            return res.json({
                 returnCode: 0,
                 returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
             });
@@ -166,23 +198,31 @@ exports.changePassword = function (req, res, next) {
     passport.authenticate('jwt', {
         session: false
     }, async (err, user, info) => {
-        if (err || !user) {
-            return res.json({
-                returnCode: -1,
-                returnMessage: "JWT không hợp lệ."
-            });
-        }
-        const username = req.params.username;
-        const password = req.body.password;
+        try {
+            if (err || !user) {
+                return res.json({
+                    returnCode: -1,
+                    returnMessage: "JWT không hợp lệ."
+                });
+            }
+            const username = req.params.username;
+            const password = req.body.password;
 
-        const result = await userModel.changePassword(username, password);
-        if (result != null && result.affectedRows === 1) {
-            res.json({
-                returnCode: 1,
-                returnMessage: "Đổi Mật Khẩu Thành Công."
-            });
-        } else {
-            res.json({
+            const result = await userModel.changePassword(username, password);
+            if (result != null && result.affectedRows === 1) {
+                res.json({
+                    returnCode: 1,
+                    returnMessage: "Đổi Mật Khẩu Thành Công."
+                });
+            } else {
+                res.json({
+                    returnCode: 0,
+                    returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                });
+            }
+        } catch (e) {
+            console.error(e);
+            return res.json({
                 returnCode: 0,
                 returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
             });
