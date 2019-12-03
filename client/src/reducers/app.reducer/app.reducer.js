@@ -1,7 +1,7 @@
 import userAction from './app.action';
 
 const INITIAL_STATE = {
-  language: 'en'
+  language: null
 }
 
 const applyChangeLanguage = (state, action) => ({

@@ -8,16 +8,25 @@ import {
   doLoginSuccess,
   doLogout 
 } from './auth.action';
+
+const cookies = new Cookies();
+
 export const login = (email, password) => async dispatch => {
   dispatch(doLogin());
   const res = await authApi.login(email, password);
-  if(res.user){
+  if(res.returnCode === 1){
     const cookies = new Cookies();
-    cookies.set('MY_TOKEN', res.token);
-    cookies.set('CURR_USER', res.user);
-    dispatch(doLoginSuccess(res.user)); 
+    cookies.set('MY_TOKEN', res.data.token);
+    cookies.set('CURR_USER', res.data.user);
+    dispatch(doLoginSuccess(res.data.user)); 
   }
   else{
-    dispatch(doLoginFail(res.message));
+    dispatch(doLoginFail(res.data.message));
   }
+}
+
+export const logout = () => async dispatch => {
+  
+  dispatch(doLogout());
+  cookies.set('CURR_USER', '');
 }

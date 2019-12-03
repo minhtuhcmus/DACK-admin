@@ -3,5 +3,6 @@ import {
 } from './app.action';
 
 export const changeLanguage = (language) => async dispatch => {
-  dispatch(doChangeLanguage);
+  console.log('thunk', language);
+  dispatch(doChangeLanguage(language));
 }

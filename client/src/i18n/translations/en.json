@@ -1,3 +1,14 @@
 {
-  "greeting":"HELLO USER!!!"
+  "app_name": "MEET UP",
+  "greeting":"HELLO USER!!!",
+  "username": "Username",
+  "require_username": "Please input your username!",
+  "password": "Password",
+  "require_password": "Please input your Password!",
+  "remember_me": "Remember me",
+  "forgot_password": "Forgot password?",
+  "login": "Log in",
+  "or": "Or",
+  "register_now": "register now!",
+  "add_user": "Add user"
 }
