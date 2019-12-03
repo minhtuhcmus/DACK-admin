@@ -114,7 +114,7 @@ exports.createUser = async function (req, res, next) {
             });
         }
     } catch (e) {
-        console.error(e);
+        console.error('error', e);
         return res.json({
             returnCode: 0,
             returnMessage: "Exception. Retry Later."
