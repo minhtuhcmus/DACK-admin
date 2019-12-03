@@ -1,7 +1,7 @@
 import { Cookies } from 'react-cookie';
 const cookies = new Cookies();
 
-const API_URL = 'http://167.179.80.90:3002'
+const API_URL = 'http://localhost:3002'
 
 const addUser = async (data) => {
   console.log('data call api', data);

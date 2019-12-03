@@ -8,7 +8,7 @@ import {userOnly} from '../hocs';
 import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Icon } from 'antd';
 const cookies = new Cookies();
-const DashboardPage = ({language}) => {
+const DashboardPage = ({language, setshowLayout}) => {
 
   const {t, i18n} = useTranslation();
   const history = useHistory();
@@ -30,14 +30,19 @@ const DashboardPage = ({language}) => {
 
   const location = useLocation();
 
-  // useEffect(() => {
-  //   if(location.pathname === '/login'){
-  //     setLayoutVisible(false);
-  //   }
-  //   else{
-  //     setLayoutVisible(true);
-  //   }
-  // });
+
+  useEffect(() => {
+    console.log('location', location.pathname);
+    async function checkLocation() {
+      if(location.pathname === '/login'){
+        await setshowLayout(false);
+      }
+      else{
+        await setshowLayout(true);
+      }
+    }
+    checkLocation();
+  });
 
   return (
     <div>

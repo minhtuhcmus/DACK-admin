@@ -7,6 +7,7 @@ import { Cookies } from 'react-cookie';
 import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Icon, Form, Input, Row, Col, Select } from 'antd';
 import { addUser } from '../reducers/user.reducer';
+import { func } from 'prop-types';
 const { Option } = Select;
 const CreateUserForm = ({form, createUser, isAddingUser}) => {
   const [confirmDirty, setConfirmDirty] = useState(false);
@@ -144,7 +145,7 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
   );
 }
 
-const CreateUserPage = ({language, isAddingUser, createUser}) => {
+const CreateUserPage = ({language, isAddingUser, createUser, setshowLayout}) => {
 
   const {t, i18n} = useTranslation();
   const WrappedCreateUserForm = Form.create()(CreateUserForm);
@@ -165,18 +166,20 @@ const CreateUserPage = ({language, isAddingUser, createUser}) => {
   //   i18n.changeLanguage(language);
   // }, [language]);
 
-  // const location = useLocation();
+  const location = useLocation();
 
-  // useEffect(() => {
-  //   if(location.pathname === '/login'){
-  //     setLayoutVisible(true);
-  //   }
-  //   else{
-  //     setLayoutVisible(false);
-  //   }
-  // });
-
-  
+  useEffect(() => {
+    console.log('location', location.pathname);
+    async function checkLocation() {
+      if(location.pathname === '/login'){
+        await setshowLayout(false);
+      }
+      else{
+        await setshowLayout(true);
+      }
+    }
+    checkLocation();
+  });
 
   return (
     <>
