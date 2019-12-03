@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux'
+import { compose } from 'redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import { logout } from '../reducers/auth.reducer';

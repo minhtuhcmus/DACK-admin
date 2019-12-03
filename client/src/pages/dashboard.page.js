@@ -1,17 +1,25 @@
 import React, { useState, useEffect }  from 'react';
+import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { compose } from 'redux';
 import { LanguageToggle } from '../components';
 import {userOnly} from '../hocs';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Icon } from 'antd';
-
+const cookies = new Cookies();
 const DashboardPage = ({language}) => {
 
   const {t, i18n} = useTranslation();
+  const history = useHistory();
+  const curr_user = cookies.get('CURR_USER');
+  useEffect(() => {
+    if(!curr_user){
+      history.push('/login');      
+    }
+  });
 
   useEffect(() => {
-    console.log('dashboard lang', language);
     i18n.changeLanguage(language);
   }, [language]);
 
@@ -19,6 +27,17 @@ const DashboardPage = ({language}) => {
   //   console.log('dashboard lang', language);
   //   i18n.changeLanguage(language);
   // }, [language]);
+
+  const location = useLocation();
+
+  // useEffect(() => {
+  //   if(location.pathname === '/login'){
+  //     setLayoutVisible(false);
+  //   }
+  //   else{
+  //     setLayoutVisible(true);
+  //   }
+  // });
 
   return (
     <div>
@@ -40,7 +59,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 });
 
-export default withRouter(connect(
-  mapStateToProps, 
-  mapDispatchToProps
-)(userOnly(DashboardPage)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DashboardPage));
