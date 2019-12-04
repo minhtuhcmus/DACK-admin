@@ -3,16 +3,24 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 const cors = require("cors");
 const passport = require('passport');
 const axios = require('axios');
+const morgan = require('morgan');
+
 const authenRoute = require('./routes/AuthenRoute');
 const userRoute = require('./routes/UserRoute');
 const jwtUtil = require('./authentication/jwt');
 
 require('./authentication/passport');
+
+morgan.token('body', function (req, res) {
+    return JSON.stringify(req.body)
+});
+
 const app = express();
+
+app.use(morgan(':method :url :status :response-time ms - :body - '));
 
 // ############ init MySQL Connection ############
 const mysql = require('./utilities/mysql');
@@ -34,7 +42,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(cors());
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: false
