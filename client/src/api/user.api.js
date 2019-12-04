@@ -1,7 +1,7 @@
 import { Cookies } from 'react-cookie';
 const cookies = new Cookies();
 
-const API_URL = 'http://localhost:3002'
+const API_URL = 'http://167.179.80.90:3002'
 
 const addUser = async (data) => {
   console.log('data call api', data);
@@ -19,9 +19,20 @@ const addUser = async (data) => {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
     },
-    body: JSON.stringify({
-      data
-    })
+    body: JSON.stringify(data)
+  });
+  console.log('res from db', res);
+  const res_data = await res.json();
+  return res_data;
+}
+
+const getUsers = async () => {
+  const res = await fetch(`${API_URL}/api/users`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
+    }
   });
   console.log('res from db', res);
   const res_data = await res.json();
@@ -29,5 +40,6 @@ const addUser = async (data) => {
 }
 
 export default {
-  addUser
+  addUser,
+  getUsers
 }

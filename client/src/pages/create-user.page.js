@@ -12,19 +12,21 @@ const { Option } = Select;
 const CreateUserForm = ({form, createUser, isAddingUser}) => {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const {t} = useTranslation();
+  const history = useHistory();
   const handleSubmit = e => {
     e.preventDefault();
       form.validateFields( async (err, values) =>  {
       if (!err) {
         console.log('values', values);
         const res = await createUser({
-          username: values.username,
+          email: values.email,
           password: values.password,
           fullName: values.fullName,
-          email: values.email,
           phoneNumber: values.phoneNumber
         });
-        console.log('res', res);
+        if(res){
+          history.push('/users');
+        }
       }
     });
   };
@@ -81,11 +83,20 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
 
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit}>
-      <Form.Item label='Username'>
-        {getFieldDecorator('username', {
-          rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+      <Form.Item label="E-mail">
+        {getFieldDecorator('email', {
+          rules: [
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
+            },
+            {
+              required: true,
+              message: 'Please input your E-mail!',
+            },
+          ],
         })(<Input />)}
-      </Form.Item>
+      </Form.Item>     
       <Form.Item label="Password" hasFeedback>
         {getFieldDecorator('password', {
           rules: [
@@ -111,20 +122,6 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
             },
           ],
         })(<Input.Password onBlur={handleConfirmBlur} />)}
-      </Form.Item>
-      <Form.Item label="E-mail">
-        {getFieldDecorator('email', {
-          rules: [
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!',
-            },
-          ],
-        })(<Input />)}
       </Form.Item>
       <Form.Item label='Fullname'>
         {getFieldDecorator('fullName', {

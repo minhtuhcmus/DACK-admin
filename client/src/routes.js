@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import { BrowserRouter as Router, Route, Link, Switch, useLocation, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { DashboardPage, LoginPage, CreateUserPage } from './pages';
+import { DashboardPage, LoginPage, CreateUserPage, UsersPage } from './pages';
 import { useTranslation } from 'react-i18next';
 import { Layout } from 'antd';
 import {LanguageToggle } from './components';
@@ -35,6 +35,9 @@ const AppRouter = ({history}) => {
               </Route>
               <Route path='/create-user'>
                 <CreateUserPage setshowLayout={setshowLayout} test={10}/>
+              </Route>
+              <Route path='/users'>
+                <UsersPage setshowLayout={setshowLayout}/>  
               </Route>
               <Route path='/'>
                 <DashboardPage setshowLayout={setshowLayout}/>
