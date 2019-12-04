@@ -19,9 +19,8 @@ module.exports.getAllUser = async () => {
 
     for (let row of res) {
         const obj = {};
-        obj.username = row.username;
-        obj.fullName = row.fullName;
         obj.email = row.email;
+        obj.fullName = row.fullName;
         obj.phoneNumber = row.phoneNumber;
         obj.role = row.role;
         obj.status = row.status;
@@ -34,7 +33,7 @@ module.exports.getAllUser = async () => {
 
 module.exports.getUser = async (username) => {
     const [res, f] = await conn.getConnection()
-        .query('SELECT * FROM AdminUser WHERE username = ?', [username])
+        .query('SELECT * FROM AdminUser WHERE email = ?', [username])
         .then(([rows, fields]) => {
             return [rows, fields];
         })
@@ -43,11 +42,11 @@ module.exports.getUser = async (username) => {
             return [null, null];
         });
 
-    if (!res[0])
+    if (!res || !res[0])
         return null;
 
     return {
-        username, password, fullName, email, phoneNumber, role, status
+        email, password, fullName, phoneNumber, role, status
     } = res[0];
 
 };
@@ -57,9 +56,8 @@ module.exports.createUser = async (user) => {
     const hash = bcrypt.hashSync(user.password, 8);
     const [res, f] = await conn.getConnection()
         .query('INSERT INTO AdminUser SET ?', {
-            username: user.username,
-            password: hash,
             email: user.email,
+            password: hash,
             fullName: user.fullName,
             phoneNumber: user.phoneNumber,
             role: 1,
@@ -74,9 +72,9 @@ module.exports.createUser = async (user) => {
     return res;
 };
 
-module.exports.updateUser = async (username, user) => {
+module.exports.updateUser = async (email, user) => {
 
-    let query = `UPDATE AdminUser SET email = '${user.email}', fullName = '${user.fullName}', phoneNumber = '${user.phoneNumber}', status = '${user.status}' where username = '${username}'`;
+    let query = `UPDATE AdminUser SET fullName = '${user.fullName}', phoneNumber = '${user.phoneNumber}', status = '${user.status}' where email = '${email}'`;
     const [res, f] = await conn.getConnection()
         .query(query).then(([rows, fields]) => {
             return [rows, fields];
@@ -88,10 +86,10 @@ module.exports.updateUser = async (username, user) => {
     return res;
 };
 
-module.exports.changePassword = async (username, password) => {
+module.exports.changePassword = async (email, password) => {
     const hash = bcrypt.hashSync(password, 8);
 
-    let query = `UPDATE AdminUser SET password = '${hash}' where username = '${username}'`;
+    let query = `UPDATE AdminUser SET password = '${hash}' where email = '${email}'`;
     const [res, f] = await conn.getConnection()
         .query(query).then(([rows, fields]) => {
             return [rows, fields];

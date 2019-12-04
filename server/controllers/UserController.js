@@ -18,9 +18,8 @@ exports.login = function (req, res, next) {
             }
 
             const token = jwt.sign({
-                username: user.username,
-                fullName: user.fullName,
                 email: user.email,
+                fullName: user.fullName,
                 phoneNumber: user.phoneNumber,
             }, '1612145');
 
@@ -28,7 +27,7 @@ exports.login = function (req, res, next) {
 
             return res.json({
                 returnCode: 1,
-                returnMessage: "Đăng nhập thành công",
+                returnMessage: "Login Success",
                 data: {
                     token: token,
                     user: newUser
@@ -62,7 +61,7 @@ exports.getAllUser = async function (req, res, next) {
 
 exports.getOneUser = async function (req, res, next) {
     try {
-        const result = await userModel.getUser(req.params.username);
+        const result = await userModel.getUser(req.params.email);
 
         if (!result) {
             res.json({
@@ -92,7 +91,7 @@ exports.createUser = async function (req, res, next) {
     try {
         const newUser = req.body;
 
-        const find = await userModel.getUser(newUser.username);
+        const find = await userModel.getUser(newUser.email);
         if (find != null) {
             res.json({
                 returnCode: -4,
@@ -110,7 +109,7 @@ exports.createUser = async function (req, res, next) {
         } else {
             res.json({
                 returnCode: 0,
-                returnMessage: "Hệ Thống Có Lỗi. Vui Lòng Thử Lại Sau."
+                returnMessage: "Exception. Retry Later."
             });
         }
     } catch (e) {
@@ -124,7 +123,7 @@ exports.createUser = async function (req, res, next) {
 
 exports.updateUser = async function (req, res, next) {
     try {
-        const username = req.params.username;
+        const username = req.params.email;
         const newUser = req.body;
 
         const result = await userModel.updateUser(username, newUser);
@@ -150,7 +149,7 @@ exports.updateUser = async function (req, res, next) {
 
 exports.changePassword = async function (req, res, next) {
     try {
-        const username = req.params.username;
+        const username = req.params.email;
         const oldPassword = req.body.oldPassword;
         const newPassword = req.body.newPassword;
 
