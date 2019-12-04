@@ -1,7 +1,7 @@
 {
   "app_name": "MEET UP",
   "greeting":"XIN CHÀO USER!!!",
-  "username": "Tên người dùng",
+  "email": "E-mail",
   "require_username": "Hãy nhập tên người dùng!",
   "password": "Mật khẩu",
   "require_password": "Hãy nhập mật khẩu!",

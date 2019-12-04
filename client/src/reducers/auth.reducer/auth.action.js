@@ -22,10 +22,10 @@ const doLogout = () => ({
   }
 });
 
-const doLogin = (username, password) => ({
+const doLogin = (email, password) => ({
   type: LOGIN,
   payload:{
-    username,
+    email,
     password
   }
 })

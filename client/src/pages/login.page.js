@@ -16,7 +16,7 @@ const NormalLoginForm = ({ form, login }) => {
     e.preventDefault();
       form.validateFields( async (err, values) =>  {
       if (!err) {
-        const res = await login(values.username, values.password);
+        const res = await login(values.email, values.password);
         if(res){
           history.push('/dashboard');
         }
@@ -27,12 +27,15 @@ const NormalLoginForm = ({ form, login }) => {
   return (
     <Form onSubmit={handleSubmit} className="login-form">
       <Form.Item>
-        {getFieldDecorator('username', {
-          rules: [{ required: true, message: t('require_username') }],
+        {getFieldDecorator('email', {
+          rules: [{
+            type: 'email',
+            message: 'The input is not valid E-mail!',
+          },{ required: true, message: t('require_username') }],
         })(
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder={t('username')}
+            placeholder={t('email')}
           />,
         )}
       </Form.Item>
@@ -111,7 +114,7 @@ const mapStateToProps = (state) => ({
 }); 
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (username, password) => dispatch(login(username, password))
+  login: (email, password) => dispatch(login(email, password))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));

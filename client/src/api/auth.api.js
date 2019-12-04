@@ -1,13 +1,13 @@
 const API_URL = 'http://167.179.80.90:3002'
 
-const login = async (username, password) => {
+const login = async (email, password) => {
   const res = await fetch(`${API_URL}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      username,
+      email,
       password
     })
   });

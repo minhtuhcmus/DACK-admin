@@ -1,7 +1,7 @@
 {
   "app_name": "MEET UP",
   "greeting":"HELLO USER!!!",
-  "username": "Username",
+  "email": "E-mail",
   "require_username": "Please input your username!",
   "password": "Password",
   "require_password": "Please input your Password!",

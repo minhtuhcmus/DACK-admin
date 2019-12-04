@@ -10,9 +10,9 @@ import {
 
 const cookies = new Cookies();
 
-export const login = (username, password) => async dispatch => {
+export const login = (email, password) => async dispatch => {
   dispatch(doLogin());
-  const res = await authApi.login(username, password);
+  const res = await authApi.login(email, password);
   if(res.returnCode === 1){
     const cookies = new Cookies();
     cookies.set('MY_TOKEN', res.data.token);
@@ -21,7 +21,7 @@ export const login = (username, password) => async dispatch => {
     return true;
   }
   else{
-    dispatch(doLoginFail(res.data.message));
+    dispatch(doLoginFail(res.message));
     return false;
   }
 }
