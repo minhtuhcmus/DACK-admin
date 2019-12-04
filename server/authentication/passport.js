@@ -17,7 +17,7 @@ passport.deserializeUser(function (user, done) {
 // ############################# LOCAL STRATEGY #############################
 
 passport.use(new LocalStrategy({
-        usernameField: 'username',
+        usernameField: 'email',
         passwordField: 'password'
     },
     function (username, password, cb) {
@@ -61,7 +61,7 @@ passport.use(new JWTStrategy({
         secretOrKey: '1612145'
     },
     function (jwtPayload, next) {
-        UserModel.getUser(jwtPayload.username)
+        UserModel.getUser(jwtPayload.email)
             .then(user => {
                 if (!user) {
                     next(null, jwtPayload);
