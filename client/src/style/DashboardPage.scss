@@ -1,0 +1,12 @@
+.ant-switch-checked{
+  background-color: rgb(1, 33, 105) !important;
+}
+.ant-switch-uncheck{
+  background-color: rgb(218, 37, 29) !important;
+  .ant-switch-inner{
+    color: rgb(255, 255, 0) !important;
+  }
+  &::after{
+    background-color: rgb(255, 255, 0) !important;
+  }
+}

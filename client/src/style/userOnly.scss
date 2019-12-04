@@ -1,0 +1,31 @@
+.ant-layout-header{
+  height: 10vh !important;
+  background: none !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ant-layout-content{
+  padding: 20px;
+}
+
+.ant-layout-footer{
+  height: 10vh !important;
+}
+
+.app-logo-navbar{
+  width: 30px;
+  height: 30px;
+}
+
+.language-toggle{
+  
+}
+
+.app-name{
+  font-size: large;
+  font-style: bold;
+  margin: 5px;
+}

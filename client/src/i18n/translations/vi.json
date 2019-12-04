@@ -1,0 +1,14 @@
+{
+  "app_name": "MEET UP",
+  "greeting":"XIN CHÀO USER!!!",
+  "email": "E-mail",
+  "require_username": "Hãy nhập tên người dùng!",
+  "password": "Mật khẩu",
+  "require_password": "Hãy nhập mật khẩu!",
+  "remember_me": "Ghi nhớ đăng nhập",
+  "forgot_password": "Quên mật khẩu?",
+  "login": "Đăng nhập",
+  "or": "hoặc",
+  "register_now": "Đăng ký ngay!",
+  "add_user": "Thêm người dùng"
+}
