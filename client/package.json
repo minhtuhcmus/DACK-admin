@@ -8,6 +8,7 @@
     "i18next": "^19.0.1",
     "node-sass": "^4.13.0",
     "react": "^16.12.0",
+    "react-cookie": "^4.0.1",
     "react-dom": "^16.12.0",
     "react-i18next": "^11.2.5",
     "react-redux": "^7.1.3",
@@ -19,6 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "pm2 start ./runserver.sh --name web-final-project-admin-frontend",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
