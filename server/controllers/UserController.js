@@ -2,6 +2,7 @@ const userModel = require('../models/User');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const redis = require('../utilities/redis');
 
 exports.login = function (req, res, next) {
     passport.authenticate('local', {
@@ -14,7 +15,11 @@ exports.login = function (req, res, next) {
             session: false
         }, (err) => {
             if (err) {
-                res.send(err);
+                console.error("Login err: " + err);
+                return res.json({
+                    returnCode: 0,
+                    returnMessage: "Exception. Retry Later."
+                });
             }
 
             const token = jwt.sign({
@@ -39,7 +44,7 @@ exports.login = function (req, res, next) {
 
 exports.getAllUser = async function (req, res, next) {
     try {
-        let result = await userModel.getAllUser();
+        let result = await redis.getAsyncWithCallback('ALL_USER',userModel.getAllUser);
 
         if (!result) {
             result = [];
@@ -61,7 +66,7 @@ exports.getAllUser = async function (req, res, next) {
 
 exports.getOneUser = async function (req, res, next) {
     try {
-        const result = await userModel.getUser(req.params.email);
+        const result = await redis.getAsyncWithCallback(req.params.email, userModel.getUser);
 
         if (!result) {
             res.json({
@@ -91,7 +96,7 @@ exports.createUser = async function (req, res, next) {
     try {
         const newUser = req.body;
 
-        const find = await userModel.getUser(newUser.email);
+        const find = await redis.getAsyncWithCallback(newUser.email, userModel.getUser);
         if (find != null) {
             res.json({
                 returnCode: -4,
@@ -102,6 +107,9 @@ exports.createUser = async function (req, res, next) {
 
         const result = await userModel.createUser(newUser);
         if (result != null && result.affectedRows === 1) {
+
+            redis.del('ALL_USER');
+
             res.json({
                 returnCode: 1,
                 returnMessage: "Success"
@@ -128,6 +136,9 @@ exports.updateUser = async function (req, res, next) {
 
         const result = await userModel.updateUser(username, newUser);
         if (result != null && result.affectedRows === 1) {
+            redis.del('ALL_USER');
+            redis.del(username);
+
             res.json({
                 returnCode: 1,
                 returnMessage: "Success"
@@ -165,6 +176,9 @@ exports.changePassword = async function (req, res, next) {
 
             const result = await userModel.changePassword(username, newPassword);
             if (result != null && result.affectedRows === 1) {
+                redis.del('ALL_USER');
+                redis.del(username);
+
                 res.json({
                     returnCode: 1,
                     returnMessage: "Success"

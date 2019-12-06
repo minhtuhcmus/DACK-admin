@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
+const redis = require('../utilities/redis');
 
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -20,37 +21,35 @@ passport.use(new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password'
     },
-    function (username, password, cb) {
-        return UserModel.getUser(username)
-            .then(user => {
-                if (!user) {
-                    return cb(null, false, {
-                        returnCode: -3,
-                        returnMessage: `User ${username} Not Found`
-                    });
-                }
+    async function (username, password, cb) {
+        const user = await redis.getAsyncWithCallback(username, UserModel.getUser);
+        if (!user) {
+            return cb(null, false, {
+                returnCode: -3,
+                returnMessage: `User ${username} Not Found`
+            });
+        }
 
-                if (user.status === 0) {
-                    return cb(null, false, {
-                        returnCode: -5,
-                        returnMessage: 'Account Has Been Blocked'
-                    });
-                }
+        if (user.status === 0) {
+            return cb(null, false, {
+                returnCode: -5,
+                returnMessage: 'Account Has Been Blocked'
+            });
+        }
 
-                bcrypt.compare(password, user.password).then((res) => {
-                    if (!res) {
-                        return cb(null, false, {
-                            returnCode: -2,
-                            returnMessage: 'Wrong Password'
-                        });
-                    }
-
-                    return cb(null, user, {
-                        returnCode: 1,
-                        returnMessage: 'Success'
-                    });
+        bcrypt.compare(password, user.password).then((res) => {
+            if (!res) {
+                return cb(null, false, {
+                    returnCode: -2,
+                    returnMessage: 'Wrong Password'
                 });
-            }).catch(err => cb(err));
+            }
+
+            return cb(null, user, {
+                returnCode: 1,
+                returnMessage: 'Success'
+            });
+        });
     }
 ));
 
@@ -60,14 +59,12 @@ passport.use(new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
         secretOrKey: '1612145'
     },
-    function (jwtPayload, next) {
-        UserModel.getUser(jwtPayload.email)
-            .then(user => {
-                if (!user) {
-                    next(null, jwtPayload);
-                } else {
-                    next(null, user);
-                }
-            }).catch(() => next(null, jwtPayload));
+    async function (jwtPayload, next) {
+        const user = await redis.getAsyncWithCallback(jwtPayload.email, UserModel.getUser);
+        if (user) {
+            next(null, user);
+        } else {
+            next(null, jwtPayload);
+        }
     }
 ));

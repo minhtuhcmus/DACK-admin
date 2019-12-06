@@ -7,6 +7,7 @@ const cors = require("cors");
 const passport = require('passport');
 const axios = require('axios');
 const morgan = require('morgan');
+const UserModel = require('./models/User');
 
 const authenRoute = require('./routes/AuthenRoute');
 const userRoute = require('./routes/UserRoute');
@@ -35,7 +36,7 @@ const mysql = require('./utilities/mysql');
 })();
 
 // ########### init Redis Connection ############
-// const redis = require('./utilities/redis');
+const redis = require('./utilities/redis');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
