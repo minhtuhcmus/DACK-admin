@@ -11,6 +11,7 @@ const UserModel = require('./models/User');
 
 const authenRoute = require('./routes/AuthenRoute');
 const userRoute = require('./routes/UserRoute');
+const skillRoute = require('./routes/SkillRoute');
 const jwtUtil = require('./authentication/jwt');
 
 require('./authentication/passport');
@@ -52,7 +53,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 app.use('/', authenRoute);
-app.use('/api', jwtUtil.validateToken, userRoute);
+app.use('/api/users', jwtUtil.validateToken, userRoute);
+app.use('/api/skills', jwtUtil.validateToken, skillRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
