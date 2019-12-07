@@ -8,7 +8,7 @@ import {userOnly} from '../hocs';
 import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Icon } from 'antd';
 const cookies = new Cookies();
-const DashboardPage = ({language, setshowLayout}) => {
+const DashboardPage = ({language, setshowLayout, setTab}) => {
 
   const {t, i18n} = useTranslation();
   const history = useHistory();
@@ -24,7 +24,6 @@ const DashboardPage = ({language, setshowLayout}) => {
   }, [language]);
 
   // useEffect(() => {
-  //   console.log('dashboard lang', language);
   //   i18n.changeLanguage(language);
   // }, [language]);
 
@@ -32,8 +31,8 @@ const DashboardPage = ({language, setshowLayout}) => {
 
 
   useEffect(() => {
-    console.log('location', location.pathname);
     async function checkLocation() {
+      await setTab(location.pathname);
       if(location.pathname === '/login'){
         await setshowLayout(false);
       }
@@ -47,7 +46,7 @@ const DashboardPage = ({language, setshowLayout}) => {
   return (
     <div>
       
-      <h1>{t('greeting')}</h1>
+      <h1>{t('dashboard')}</h1>
       <Link to='/create-user'>
         <Button className='add-user-button' size='large' icon='plus-circle' type='primary'>
           {t('add_user')}

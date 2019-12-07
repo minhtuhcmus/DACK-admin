@@ -75,7 +75,6 @@ const LoginPage = ({language, setshowLayout, login}) => {
   const history = useHistory();
  
   useEffect(() => {
-    console.log('location', location.pathname);
     async function checkLocation() {
       if(location.pathname === '/login'){
         await setshowLayout(false);
@@ -87,7 +86,6 @@ const LoginPage = ({language, setshowLayout, login}) => {
     checkLocation();
   });
   useEffect(() => {
-    console.log('login lang', language);
     i18n.changeLanguage(language);
   }, [language]);
 

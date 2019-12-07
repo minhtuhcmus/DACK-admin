@@ -10,9 +10,7 @@ const cookies = new Cookies();
 
 export const addUser = (data) => async dispatch => {
   dispatch(doAddUser(data));
-  console.log('data', data);
   const res = await userApi.addUser(data);
-  console.log('res from api', res);
   if(res.returnCode === 1){
     dispatch(doAddUserSuccess());
     return true;

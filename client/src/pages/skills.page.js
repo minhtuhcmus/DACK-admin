@@ -5,16 +5,15 @@ import { useTranslation } from 'react-i18next';
 import { compose } from 'redux';
 import { LanguageToggle } from '../components';
 import {userOnly} from '../hocs';
-import { withRouter, Link, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
-import { Button, Icon, Table, Tag, Row, Col, Popover } from 'antd';
+import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
+import { Button, Icon, Table, Tag } from 'antd';
 import { userApi } from '../api';
 const cookies = new Cookies();
-const UsersPage = ({language, setshowLayout, setTab}) => {
+const SkillsPage = ({language, setshowLayout, setTab}) => {
 
   const {t, i18n} = useTranslation();
   const history = useHistory();
   const curr_user = cookies.get('CURR_USER');
-  const {url} = useRouteMatch();
   useEffect(() => {
     if(!curr_user){
       history.push('/login');      
@@ -56,37 +55,28 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
 
   return (
     <div>
-      <Row className='page-title'>
-        <h1 className='page-title-text'>{t('users')}</h1>
-        <Link to='/users/create-user'>
-          <Button className='add-user-btn' type='primary' >
-            <Icon type='user-add'/>
-            {
-              t('add_user')
-            }
-          </Button>
-        </Link>
-      </Row>
+      
+      <h1>{t('skills')}</h1>
       <Table 
         columns={
           [
             {
-              title: t('full_name'),
+              title: 'Full Name',
               dataIndex: 'fullName',
               key: 'fullName'
             },
             {
-              title: t('email'),
+              title: 'E-mail',
               dataIndex: 'email',
               key: 'email'
             },
             {
-              title: t('phone_number'),
+              title: 'Phone Number',
               dataIndex: 'phoneNumber',
               key: 'phoneNumber'
             },
             {
-              title: t('role'),
+              title: 'Role',
               dataIndex: 'role',
               key: 'role',
               render: role => (
@@ -95,36 +85,6 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
                     {role===0 ? 'ADMIN': 'USER'}
                   </Tag>
                 </span>
-              )
-            },
-            {
-              title: t('action'),
-              dataIndex: 'email',
-              key: 'email',
-              render: email => (
-                <div> 
-                  <Link className='action-btn' to={`${url}/${email}`}>
-                    <Popover content={(
-                      <span>{t('detail')}</span>
-                    )}>
-                      <Button type='primary'>
-                        <Icon type='eye'/>
-                      </Button>
-                    </Popover>
-                    
-                  </Link>
-                  
-                  <Link className='action-btn'>
-                    <Popover content={(
-                      <span>{t('delete')}</span>
-                    )}>
-                      <Button type='danger'>
-                        <Icon type='delete'/>
-                      </Button>
-                    </Popover>
-                  </Link>
-                </div>
-                
               )
             }
           ]
@@ -150,4 +110,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UsersPage));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SkillsPage));

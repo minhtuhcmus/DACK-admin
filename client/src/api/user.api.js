@@ -4,15 +4,6 @@ const cookies = new Cookies();
 const API_URL = 'http://167.179.80.90:3002'
 
 const addUser = async (data) => {
-  console.log('data call api', data);
-  console.log({
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
-    },
-    body: JSON.stringify(data)
-  });
   const res = await fetch(`${API_URL}/api/users`, {
     method: 'POST',
     headers: {
@@ -21,7 +12,6 @@ const addUser = async (data) => {
     },
     body: JSON.stringify(data)
   });
-  console.log('res from db', res);
   const res_data = await res.json();
   return res_data;
 }
@@ -34,12 +24,24 @@ const getUsers = async () => {
       'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
     }
   });
-  console.log('res from db', res);
+  const res_data = await res.json();
+  return res_data;
+}
+
+const getUser = async (email) => {
+  const res = await fetch(`${API_URL}/api/users/${email}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
+    }
+  });
   const res_data = await res.json();
   return res_data;
 }
 
 export default {
   addUser,
-  getUsers
+  getUsers, 
+  getUser
 }
