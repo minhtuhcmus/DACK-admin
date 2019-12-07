@@ -9,7 +9,7 @@ import { Button, Icon, Form, Input, Row, Col, Select } from 'antd';
 import { addUser } from '../reducers/user.reducer';
 import { userApi } from '../api';
 const { Option } = Select;
-const CreateUserForm = ({form, createUser, isAddingUser}) => {
+const CreateUserForm = ({form, createUser, isAddingUser, user}) => {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const {t} = useTranslation();
   const history = useHistory();
@@ -81,63 +81,47 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
   };
 
   return (
-    <Form {...formItemLayout} onSubmit={handleSubmit}>
-      <Form.Item label={t('email')}>
-        {getFieldDecorator('email', {
-          rules: [
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!',
-            },
-          ],
-        })(<Input />)}
-      </Form.Item>     
-      <Form.Item label={t('password')} hasFeedback>
-        {getFieldDecorator('password', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-            {
-              validator: validateToNextPassword,
-            },
-          ],
-        })(<Input.Password />)}
-      </Form.Item>
-      <Form.Item label={t('confirm')} hasFeedback>
-        {getFieldDecorator('confirm', {
-          rules: [
-            {
-              required: true,
-              message: 'Please confirm your password!',
-            },
-            {
-              validator: compareToFirstPassword,
-            },
-          ],
-        })(<Input.Password onBlur={handleConfirmBlur} />)}
-      </Form.Item>
-      <Form.Item label={t('full_name')}>
-        {getFieldDecorator('fullName', {
-          rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label={t('phone_number')}>
-        {getFieldDecorator('phoneNumber', {
-          rules: [{ required: true, message: 'Please input your phone number!' }],
-        })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
-      </Form.Item>
-      <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit" loading={isAddingUser}>
-          {t('add_user')}
-        </Button>
-      </Form.Item>
-    </Form>
+    <>
+    {
+      user ?
+      <Form {...formItemLayout} onSubmit={handleSubmit}> 
+        <Form.Item label={t('email')}>
+          {getFieldDecorator('email', {
+            rules: [
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ],
+            initialValue: user.email
+          })(<Input />)}
+        </Form.Item>     
+        <Form.Item label={t('full_name')}>
+          {getFieldDecorator('fullName', {
+            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+            initialValue: user.fullName
+          })(<Input/>)}
+        </Form.Item>
+        <Form.Item label={t('phone_number')}>
+          {getFieldDecorator('phoneNumber', {
+            rules: [{ required: true, message: 'Please input your phone number!' }],
+            initialValue: user.phoneNumber 
+          })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
+        </Form.Item>
+        {/* <Form.Item {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit" loading={isAddingUser}>
+            {t('add_user')}
+          </Button>
+        </Form.Item> */}
+      </Form>
+      :
+      <></>
+    }
+    </>
   );
 }
 
@@ -181,9 +165,12 @@ const UserDetailPage = ({language, isAddingUser, createUser, setshowLayout}) => 
 
   useEffect(() => {
     async function fetchUser() {
-      const res = await 
+      const res = await userApi.getUser(email);
+      await setUser(res.data);
     }
-  })
+
+    fetchUser();
+  },[]);
 
   const goBack = () => {
     history.goBack()
@@ -195,17 +182,16 @@ const UserDetailPage = ({language, isAddingUser, createUser, setshowLayout}) => 
       !cookies.get('CURR_USER') ?
       history.push('/')
       :
-      // <Row type='flex' justify='center' align='middle' className='login-container'>
-      //   <Col span={2}>
-      //     <Button className='menu-button' type='link' onClick={goBack}>
-      //       <Icon type='arrow-left' style={{fontSize:'32px', margin:'4px', }}/>
-      //     </Button>
-      //   </Col>
-      //   <Col span={12} className='create-user-form-container'>
-      //     <WrappedCreateUserForm createUser={createUser} isAddingUser={isAddingUser}/>
-      //   </Col> 
-      // </Row>
-    <div>{email}</div>
+      <Row type='flex' justify='center' align='middle' className='login-container'>
+        <Col span={2}>
+          <Button className='menu-button' type='link' onClick={goBack}>
+            <Icon type='arrow-left' style={{fontSize:'32px', margin:'4px', }}/>
+          </Button>
+        </Col>
+        <Col span={12} className='create-user-form-container'>
+          <WrappedCreateUserForm createUser={createUser} isAddingUser={isAddingUser} user={user}/>
+        </Col> 
+      </Row>
     }
     </>
   );

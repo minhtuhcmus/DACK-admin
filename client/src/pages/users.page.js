@@ -54,6 +54,10 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
     loadData();
   }, []);
 
+  // const deleteUser =  async (email) => {
+  //   await userApi.deleteUser(email)
+  // }
+
   return (
     <div>
       <Row className='page-title'>
@@ -100,7 +104,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
             {
               title: t('action'),
               dataIndex: 'email',
-              key: 'email',
+              key: 'action',
               render: email => (
                 <div> 
                   <Link className='action-btn' to={`${url}/${email}`}>
@@ -114,7 +118,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
                     
                   </Link>
                   
-                  <Link className='action-btn'>
+                  {/* <Link className='action-btn' to={deleteUser(email)}>
                     <Popover content={(
                       <span>{t('delete')}</span>
                     )}>
@@ -122,7 +126,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
                         <Icon type='delete'/>
                       </Button>
                     </Popover>
-                  </Link>
+                  </Link> */}
                 </div>
                 
               )
