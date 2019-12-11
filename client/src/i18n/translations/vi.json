@@ -22,5 +22,6 @@
   "detail": "Thông tin chi tiết",
   "delete": "Xóa",
   "add_skill":"Thêm kỹ năng",
-  "skill_name":"Tên kỹ năng"
+  "skill_name":"Tên kỹ năng",
+  "logout":"Đăng xuất"
 }

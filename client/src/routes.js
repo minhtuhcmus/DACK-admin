@@ -6,11 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { Layout, Menu, Icon, Button } from 'antd';
 import {LanguageToggle } from './components';
 import logo from './assets/logo225.png';
+import { logout } from './reducers/auth.reducer';
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 
-const AppRouter = () => {
+const AppRouter = ({logout}) => {
   const { t, i18n } = useTranslation();
   const [showLayout, setshowLayout] = useState(true);
   const [collapsed, setCollapsed] = useState(true);
@@ -30,6 +31,14 @@ const AppRouter = () => {
           <span className='app-name'>{t('app_name')}</span>
           <div className='language-toggle'>
             <LanguageToggle/>
+          </div>
+
+          <div className={`header-btn ${showLayout ? '' : 'hide'}`}>
+            <Link to='/login'>
+              <Button type='primary' onClick={() => {
+                logout();
+              }}>{t('logout')}</Button>
+            </Link>
           </div>
         </Header>
         <Layout className={`${showLayout ? 'width-80': 'full-width'}`}>
@@ -96,6 +105,7 @@ const mapStateToProps = (state) => ({
 }); 
 
 const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logout())
 });
 
 export default connect(
