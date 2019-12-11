@@ -20,5 +20,7 @@
   "confirm":"Xác nhận mật khẩu",
   "action":"Hành động",
   "detail": "Thông tin chi tiết",
-  "delete": "Xóa"
+  "delete": "Xóa",
+  "add_skill":"Thêm kỹ năng",
+  "skill_name":"Tên kỹ năng"
 }

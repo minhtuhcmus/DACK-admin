@@ -63,7 +63,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
       <Row className='page-title'>
         <h1 className='page-title-text'>{t('users')}</h1>
         <Link to='/users/create-user'>
-          <Button className='add-user-btn' type='primary' >
+          <Button className='float-right-btn' type='primary' >
             <Icon type='user-add'/>
             {
               t('add_user')

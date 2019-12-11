@@ -6,11 +6,13 @@ import { compose } from 'redux';
 import { LanguageToggle } from '../components';
 import {userOnly} from '../hocs';
 import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
-import { Button, Icon, Table, Tag } from 'antd';
-import { userApi } from '../api';
+import { Button, Icon, Table, Tag, Row, Drawer, Popover, Input } from 'antd';
+import { skillApi } from '../api';
+import Slider from 'react-slick';
 const cookies = new Cookies();
 const SkillsPage = ({language, setshowLayout, setTab}) => {
-
+  const [showDrawer, setShowDrawer] = useState(false);
+  const [newSkill, setNewSkill] = useState('');
   const {t, i18n} = useTranslation();
   const history = useHistory();
   const curr_user = cookies.get('CURR_USER');
@@ -29,7 +31,7 @@ const SkillsPage = ({language, setshowLayout, setTab}) => {
   // }, [language]);
 
   const location = useLocation();
-  const [userList, setUserList] = useState(null);
+  const [skillList, setSkillList] = useState(null);
 
   useEffect(() => {
     async function checkLocation() {
@@ -44,60 +46,90 @@ const SkillsPage = ({language, setshowLayout, setTab}) => {
     checkLocation();
   });
 
-  useEffect(() => {
-    async function loadData() {
-      const res = await userApi.getUsers();
-      await setUserList(res.data);
-    }
+  async function loadData() {
+    const res = await skillApi.getSkills();
+    await setSkillList(res.data);
+  }
 
+  useEffect(() => {
     loadData();
   }, []);
 
   return (
     <div>
       
-      <h1>{t('skills')}</h1>
-      <Table 
-        columns={
-          [
+      <Row className='page-title'>
+        <h1 className='page-title-text'>{t('skills')}</h1>
+          <Button className='float-right-btn' type='primary' onClick={() => {
+            setShowDrawer(true);
+          }}>
+            <Icon type='plus'/>
             {
-              title: 'Full Name',
-              dataIndex: 'fullName',
-              key: 'fullName'
-            },
-            {
-              title: 'E-mail',
-              dataIndex: 'email',
-              key: 'email'
-            },
-            {
-              title: 'Phone Number',
-              dataIndex: 'phoneNumber',
-              key: 'phoneNumber'
-            },
-            {
-              title: 'Role',
-              dataIndex: 'role',
-              key: 'role',
-              render: role => (
-                <span>
-                  <Tag color={role === 1 ? 'geekblue' : 'green'} key={role}>
-                    {role===0 ? 'ADMIN': 'USER'}
-                  </Tag>
-                </span>
-              )
+              t('add_skill')
             }
-          ]
-        }
+          </Button>
+      </Row>
+      <Drawer
+        title="Add skill"
+        placement="right"
+        closable={false}
+        onClose={() => {
+          setShowDrawer(false);
+        }}
+        visible={showDrawer}
+      >
+        <Input 
+          size='large' 
+          placeholder='Skill name' 
+          value={newSkill}
+          onChange={async (e) => {
+            await setNewSkill(e.target.value);
+          }}
+          />
+        <Button 
+          className='add-skill-btn' 
+          type='primary'
+          onClick={async () => {
+            if(newSkill!=''&&newSkill){
+              await skillApi.addSkill({skillName: newSkill});
+              setShowDrawer(false);
+              setNewSkill('');
+              loadData();
+            }
+          }}
+        
+        >{t('add_skill')}</Button>
+      </Drawer>
+      <Table 
+          columns={
+            [
+              {
+                title: t('skill_name'),
+                dataIndex: 'skillName',
+                key: 'skillName'
+              },
+              {
+                title: t('action'),
+                dataIndex: 'skillID',
+                key: 'action',
+                render: skillID => (
+                  <div> 
+                    <Button icon='delete' type='danger' onClick={ async () => {
+                      await skillApi.deleteSkill(skillID);
+                      loadData();
+                    }}/>
+                  </div>
+                )
+              }
+            ]
+          }
 
-        dataSource={userList ? userList.map((user, index) => ({
-          fullName: user.fullName,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          role: user.role,
-          key: index
-        })): null}
-      />
+          dataSource={skillList ? skillList.map((skill, index) => ({
+            skillName: skill.skillName,
+            skillID: skill.skillID,
+            key: index
+          })): null}
+        />
     </div>
   );
 }

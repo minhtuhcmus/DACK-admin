@@ -20,5 +20,7 @@
   "confirm":"Confirm Password",
   "action":"Action",
   "detail": "Detail",
-  "delete": "Delete"
+  "delete": "Delete",
+  "add_skill":"Add skill",
+  "skill_name":"Skill name"
 }
