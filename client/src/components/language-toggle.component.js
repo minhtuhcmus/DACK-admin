@@ -14,13 +14,10 @@ const LanguageToggle = ({language, changeLanguage}) => {
 
   return (
     <Switch className={classNames({'ant-switch-uncheck': !checked})} checkedChildren='EN' unCheckedChildren='VI' checked={checked} onChange={(checked) => {
-      console.log('checked', checked);
       if(checked){
-        console.log('change to en');
         changeLanguage('en');
       }
       else{
-        console.log('change to vi');
         changeLanguage('vi');
       }
       setChecked(checked);

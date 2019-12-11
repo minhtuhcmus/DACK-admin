@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { LanguageToggle } from '../components';
 import {userOnly} from '../hocs';
 import { Cookies } from 'react-cookie';
-import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
+import { withRouter, Link, useLocation, useHistory, useParams } from 'react-router-dom';
 import { Button, Icon, Form, Input, Row, Col, Select } from 'antd';
 import { addUser } from '../reducers/user.reducer';
-import { func } from 'prop-types';
+import { userApi } from '../api';
 const { Option } = Select;
-const CreateUserForm = ({form, createUser, isAddingUser}) => {
+const CreateUserForm = ({form, createUser, isAddingUser, user}) => {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const {t} = useTranslation();
   const history = useHistory();
@@ -81,75 +81,63 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
   };
 
   return (
-    <Form {...formItemLayout} onSubmit={handleSubmit}>
-      <Form.Item label={t('email')}>
-        {getFieldDecorator('email', {
-          rules: [
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!',
-            },
-          ],
-        })(<Input />)}
-      </Form.Item>     
-      <Form.Item label={t('password')} hasFeedback>
-        {getFieldDecorator('password', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-            {
-              validator: validateToNextPassword,
-            },
-          ],
-        })(<Input.Password />)}
-      </Form.Item>
-      <Form.Item label={t('confirm')} hasFeedback>
-        {getFieldDecorator('confirm', {
-          rules: [
-            {
-              required: true,
-              message: 'Please confirm your password!',
-            },
-            {
-              validator: compareToFirstPassword,
-            },
-          ],
-        })(<Input.Password onBlur={handleConfirmBlur} />)}
-      </Form.Item>
-      <Form.Item label={t('full_name')}>
-        {getFieldDecorator('fullName', {
-          rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label={t('phone_number')}>
-        {getFieldDecorator('phoneNumber', {
-          rules: [{ required: true, message: 'Please input your phone number!' }],
-        })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
-      </Form.Item>
-      <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit" loading={isAddingUser}>
-          {t('add_user')}
-        </Button>
-      </Form.Item>
-    </Form>
+    <>
+    {
+      user ?
+      <Form {...formItemLayout} onSubmit={handleSubmit}> 
+        <Form.Item label={t('email')}>
+          {getFieldDecorator('email', {
+            rules: [
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ],
+            initialValue: user.email
+          })(<Input />)}
+        </Form.Item>     
+        <Form.Item label={t('full_name')}>
+          {getFieldDecorator('fullName', {
+            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+            initialValue: user.fullName
+          })(<Input/>)}
+        </Form.Item>
+        <Form.Item label={t('phone_number')}>
+          {getFieldDecorator('phoneNumber', {
+            rules: [{ required: true, message: 'Please input your phone number!' }],
+            initialValue: user.phoneNumber 
+          })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
+        </Form.Item>
+        {/* <Form.Item {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit" loading={isAddingUser}>
+            {t('add_user')}
+          </Button>
+        </Form.Item> */}
+      </Form>
+      :
+      <></>
+    }
+    </>
   );
 }
 
-const CreateUserPage = ({language, isAddingUser, createUser, setshowLayout}) => {
+const UserDetailPage = ({language, isAddingUser, createUser, setshowLayout}) => {
 
   const {t, i18n} = useTranslation();
   const WrappedCreateUserForm = Form.create()(CreateUserForm);
   const cookies = new Cookies(); 
   const history = useHistory();
+  const { email } = useParams();
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
+
   const curr_user = cookies.get('CURR_USER');
   useEffect(() => {
     if(!curr_user){
@@ -175,6 +163,15 @@ const CreateUserPage = ({language, isAddingUser, createUser, setshowLayout}) => 
     checkLocation();
   });
 
+  useEffect(() => {
+    async function fetchUser() {
+      const res = await userApi.getUser(email);
+      await setUser(res.data);
+    }
+
+    fetchUser();
+  },[]);
+
   const goBack = () => {
     history.goBack()
   }
@@ -192,7 +189,7 @@ const CreateUserPage = ({language, isAddingUser, createUser, setshowLayout}) => 
           </Button>
         </Col>
         <Col span={12} className='create-user-form-container'>
-          <WrappedCreateUserForm createUser={createUser} isAddingUser={isAddingUser}/>
+          <WrappedCreateUserForm createUser={createUser} isAddingUser={isAddingUser} user={user}/>
         </Col> 
       </Row>
     }
@@ -212,4 +209,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps, 
   mapDispatchToProps
-)(CreateUserPage));
+)(UserDetailPage));

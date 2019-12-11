@@ -5,15 +5,16 @@ import { useTranslation } from 'react-i18next';
 import { compose } from 'redux';
 import { LanguageToggle } from '../components';
 import {userOnly} from '../hocs';
-import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
-import { Button, Icon, Table, Tag } from 'antd';
+import { withRouter, Link, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
+import { Button, Icon, Table, Tag, Row, Col, Popover } from 'antd';
 import { userApi } from '../api';
 const cookies = new Cookies();
-const UsersPage = ({language, setshowLayout}) => {
+const UsersPage = ({language, setshowLayout, setTab}) => {
 
   const {t, i18n} = useTranslation();
   const history = useHistory();
   const curr_user = cookies.get('CURR_USER');
+  const {url} = useRouteMatch();
   useEffect(() => {
     if(!curr_user){
       history.push('/login');      
@@ -25,7 +26,6 @@ const UsersPage = ({language, setshowLayout}) => {
   }, [language]);
 
   // useEffect(() => {
-  //   console.log('dashboard lang', language);
   //   i18n.changeLanguage(language);
   // }, [language]);
 
@@ -33,8 +33,8 @@ const UsersPage = ({language, setshowLayout}) => {
   const [userList, setUserList] = useState(null);
 
   useEffect(() => {
-    console.log('location', location.pathname);
     async function checkLocation() {
+      await setTab(location.pathname);
       if(location.pathname === '/login'){
         await setshowLayout(false);
       }
@@ -49,36 +49,48 @@ const UsersPage = ({language, setshowLayout}) => {
     async function loadData() {
       const res = await userApi.getUsers();
       await setUserList(res.data);
-      console.log(res.data);
     }
 
     loadData();
   }, []);
 
+  // const deleteUser =  async (email) => {
+  //   await userApi.deleteUser(email)
+  // }
+
   return (
     <div>
-      
-      <h1>{t('greeting')}</h1>
+      <Row className='page-title'>
+        <h1 className='page-title-text'>{t('users')}</h1>
+        <Link to='/users/create-user'>
+          <Button className='float-right-btn' type='primary' >
+            <Icon type='user-add'/>
+            {
+              t('add_user')
+            }
+          </Button>
+        </Link>
+      </Row>
       <Table 
         columns={
           [
             {
-              title: 'Full Name',
+              title: t('full_name'),
               dataIndex: 'fullName',
               key: 'fullName'
             },
             {
-              title: 'E-mail',
+              title: t('email'),
               dataIndex: 'email',
               key: 'email'
             },
             {
-              title: 'Phone Number',
+              title: t('phone_number'),
               dataIndex: 'phoneNumber',
               key: 'phoneNumber'
             },
             {
-              title: 'Role',
+              title: t('role'),
               dataIndex: 'role',
               key: 'role',
               render: role => (
@@ -87,6 +99,36 @@ const UsersPage = ({language, setshowLayout}) => {
                     {role===0 ? 'ADMIN': 'USER'}
                   </Tag>
                 </span>
+              )
+            },
+            {
+              title: t('action'),
+              dataIndex: 'email',
+              key: 'action',
+              render: email => (
+                <div> 
+                  <Link className='action-btn' to={`${url}/${email}`}>
+                    <Popover content={(
+                      <span>{t('detail')}</span>
+                    )}>
+                      <Button type='primary'>
+                        <Icon type='eye'/>
+                      </Button>
+                    </Popover>
+                    
+                  </Link>
+                  
+                  {/* <Link className='action-btn' to={deleteUser(email)}>
+                    <Popover content={(
+                      <span>{t('delete')}</span>
+                    )}>
+                      <Button type='danger'>
+                        <Icon type='delete'/>
+                      </Button>
+                    </Popover>
+                  </Link> */}
+                </div>
+                
               )
             }
           ]

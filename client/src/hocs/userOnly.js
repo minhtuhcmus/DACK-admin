@@ -21,7 +21,6 @@ const userOnly = (MyComponent) => {
     const history = useHistory();
     const cookies = new Cookies();  
     const curr_user = cookies.get('CURR_USER');
-    console.log(curr_user);
 
     useEffect(() => {
       if(!curr_user){

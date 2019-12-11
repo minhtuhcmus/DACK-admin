@@ -10,5 +10,17 @@
   "login": "Đăng nhập",
   "or": "hoặc",
   "register_now": "Đăng ký ngay!",
-  "add_user": "Thêm người dùng"
+  "add_user": "Thêm người dùng",
+  "dashboard": "Trang quản lý",
+  "users": "Quản lý người dùng",
+  "skills": "Quản lý kỹ năng",
+  "full_name": "Họ tên",
+  "phone_number": "Số điện thoại",
+  "role": "Vai trò",
+  "confirm":"Xác nhận mật khẩu",
+  "action":"Hành động",
+  "detail": "Thông tin chi tiết",
+  "delete": "Xóa",
+  "add_skill":"Thêm kỹ năng",
+  "skill_name":"Tên kỹ năng"
 }

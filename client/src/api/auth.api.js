@@ -11,7 +11,6 @@ const login = async (email, password) => {
       password
     })
   });
-  console.log('res from db', res);
   const data = await res.json();
   return data;
 }
