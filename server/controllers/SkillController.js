@@ -25,7 +25,7 @@ exports.getAllSkill = async function (req, res, next) {
 
 exports.getOneSkill = async function (req, res, next) {
     try {
-        const result = await redis.getAsyncWithCallback(req.params.skillID, skillModel.getSkill);
+        const result = await skillModel.getSkill(req.params.skillID);
 
         if (!result) {
             res.json({
@@ -87,7 +87,6 @@ exports.updateSkill = async function (req, res, next) {
         const result = await skillModel.updateSkill(skillID, newSkill);
         if (result != null && result.affectedRows === 1) {
             redis.del('ALL_SKILL');
-            redis.del(skillID);
 
             res.json({
                 returnCode: 1,
@@ -115,8 +114,6 @@ exports.deleteSkill = async function (req, res, next) {
         const result = await skillModel.deleteSkill(skillID);
         if (result != null && result.affectedRows === 1) {
             redis.del('ALL_SKILL');
-            redis.del(skillID);
-
             res.json({
                 returnCode: 1,
                 returnMessage: "Success"

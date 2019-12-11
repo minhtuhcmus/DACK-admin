@@ -17,7 +17,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
   const {url} = useRouteMatch();
   useEffect(() => {
     if(!curr_user){
-      history.push('/login');      
+      history.push('/login');
     }
   });
 
@@ -48,6 +48,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
   useEffect(() => {
     async function loadData() {
       const res = await userApi.getUsers();
+      console.log(res.data);
       await setUserList(res.data);
     }
 
@@ -71,7 +72,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
           </Button>
         </Link>
       </Row>
-      <Table 
+      <Table
         columns={
           [
             {
@@ -96,7 +97,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
               render: role => (
                 <span>
                   <Tag color={role === 1 ? 'geekblue' : 'green'} key={role}>
-                    {role===0 ? 'ADMIN': 'USER'}
+                    {role===0 ? 'SUPERADMIN': 'ADMIN'}
                   </Tag>
                 </span>
               )
@@ -106,7 +107,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
               dataIndex: 'email',
               key: 'action',
               render: email => (
-                <div> 
+                <div>
                   <Link className='action-btn' to={`${url}/${email}`}>
                     <Popover content={(
                       <span>{t('detail')}</span>
@@ -115,9 +116,9 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
                         <Icon type='eye'/>
                       </Button>
                     </Popover>
-                    
+
                   </Link>
-                  
+
                   {/* <Link className='action-btn' to={deleteUser(email)}>
                     <Popover content={(
                       <span>{t('delete')}</span>
@@ -128,7 +129,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
                     </Popover>
                   </Link> */}
                 </div>
-                
+
               )
             }
           ]
@@ -147,8 +148,8 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
 }
 
 const mapStateToProps = (state) => ({
-  language: state.appReducer.language  
-}); 
+  language: state.appReducer.language
+});
 
 const mapDispatchToProps = (dispatch) => ({
 
