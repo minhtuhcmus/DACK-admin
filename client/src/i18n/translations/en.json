@@ -22,5 +22,6 @@
   "detail": "Detail",
   "delete": "Delete",
   "add_skill":"Add skill",
-  "skill_name":"Skill name"
+  "skill_name":"Skill name",
+  "logout":"Logout"
 }
