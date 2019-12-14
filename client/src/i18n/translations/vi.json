@@ -25,5 +25,8 @@
   "skill_name":"Tên kỹ năng",
   "logout":"Đăng xuất",
   "lock": "Khóa",
-  "unlock": "Mở khóa"
+  "unlock": "Mở khóa",
+  "status": "Trạng thái",
+  "active": "Hoạt động",
+  "block": "Bị chặn"
 }

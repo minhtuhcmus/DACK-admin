@@ -25,5 +25,8 @@
   "skill_name":"Skill name",
   "logout":"Logout",
   "lock": "Lock",
-  "unlock": "Unlock"
+  "unlock": "Unlock",
+  "status": "Status",
+  "active": "Active",
+  "block": "Blocked"
 }

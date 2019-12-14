@@ -103,12 +103,39 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
               )
             },
             {
-              title: t('action'),
-              key: 'action',
+              title: t('status'),
               dataIndex: 'status',
+              key: 'status',
               render: (status, record) => (
                 <div>
-                  <Link className='action-btn' to={`${url}/${record.email}`}>
+                {
+                  record.role === 1 ?
+                  <Link className='action-btn'>
+                    <Popover content={(
+                      <span>{status === 1 ? t('lock') : t('unlock')}</span>
+                    )}>
+                      <Button className={!(status === 1) ? 'lock' : 'unlock'} onClick={async() => {
+                        record.status = status === 1 ? 0 : 1;
+                        await userApi.changeStatus(record.email, record);
+                        loadData();
+                      }}>
+                        {!(status === 1) ? t('block') : t('active')}
+                      </Button>
+                    </Popover>
+                  </Link>
+                  :
+                  null
+                }
+                </div>
+              )
+            },
+            {
+              title: t('action'),
+              key: 'action',
+              dataIndex: 'email',
+              render: email => (
+                <div>
+                  <Link className='action-btn' to={`${url}/${email}`}>
                     <Popover content={(
                       <span>{t('detail')}</span>
                     )}>
@@ -118,26 +145,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
                     </Popover>
 
                   </Link>
-                  {
-                    record.role === 1 ?
-                    <Link className='action-btn'>
-                      <Popover content={(
-                        <span>{status === 1 ? t('lock') : t('unlock')}</span>
-                      )}>
-                        <Button className={status === 1 ? 'lock' : 'unlock'} onClick={async() => {
-                          record.status = status === 1 ? 0 : 1;
-                          await userApi.changeStatus(record.email, record);
-                          loadData();
-                        }}>
-                          <Icon type={status === 1 ? 'lock' : 'unlock'}/>
-                        </Button>
-                      </Popover>
-                    </Link>
-                    :
-                    null
-                  }
                 </div>
-
               )
             },
           ]
