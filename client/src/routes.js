@@ -29,17 +29,22 @@ const AppRouter = ({logout}) => {
           </Button>
           
           <span className='app-name'>{t('app_name')}</span>
-          <div className='language-toggle'>
-            <LanguageToggle/>
+          
+          <div className='header-right'>
+            <div className='language-toggle'>
+              <LanguageToggle/>
+            </div>
+
+            <div className={`float-right-btn ${showLayout ? '' : 'hide'}`}>
+              <Link to='/login'>
+                <Button type='primary' onClick={() => {
+                  logout();
+                }}>{t('logout')}</Button>
+              </Link>
+            </div>
+        
           </div>
 
-          <div className={`header-btn ${showLayout ? '' : 'hide'}`}>
-            <Link to='/login'>
-              <Button type='primary' onClick={() => {
-                logout();
-              }}>{t('logout')}</Button>
-            </Link>
-          </div>
         </Header>
         <Layout className={`${showLayout ? 'width-80': 'full-width'}`}>
           <Sider className={`${showLayout ? '' : 'hide'}`} trigger={null} collapsible collapsed={collapsed}>

@@ -40,8 +40,22 @@ const getUser = async (email) => {
   return res_data;
 }
 
+const changeStatus = async (email, data) => {
+  const res = await fetch(`${API_URL}/api/users/${email}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
+    },
+    body: JSON.stringify(data)
+  });
+  const res_data = await res.json();
+  return res_data;
+}
+
 export default {
   addUser,
   getUsers, 
-  getUser
+  getUser,
+  changeStatus
 }

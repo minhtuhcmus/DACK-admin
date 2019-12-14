@@ -106,12 +106,14 @@ const SkillsPage = ({language, setshowLayout, setTab}) => {
               {
                 title: t('skill_name'),
                 dataIndex: 'skillName',
-                key: 'skillName'
+                key: 'skillName',
+                width: 100
               },
               {
                 title: t('action'),
                 dataIndex: 'skillID',
                 key: 'action',
+                width: 100,
                 render: skillID => (
                   <div> 
                     <Button icon='delete' type='danger' onClick={ async () => {
@@ -129,6 +131,7 @@ const SkillsPage = ({language, setshowLayout, setTab}) => {
             skillID: skill.skillID,
             key: index
           })): null}
+          scroll={{ y: 350}}
         />
     </div>
   );

@@ -34,6 +34,8 @@
 .content-wrapper{
   margin: 5px;
   padding: 25px;
+  width: 100%;
+  height: 100%;
   background-color: white;
   @include box-outline(); 
 }
@@ -41,10 +43,7 @@
 .ant-layout-header{
   height: 10vh !important;
   background: white !important;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  text-align: center;
   padding-left: 20px !important;
   @include box-outline(); 
 }
@@ -75,17 +74,25 @@
 }
 
 .language-toggle{
-  
+  float: left;
+}
+
+.header-right{
+  float: right;
+  width: 10%;
 }
 
 .app-name{
   font-size: large;
-  font-style: bold;
-  margin: 5px;
+  font-style: bold !important;
+  width: 60%;
+  margin: auto;
 }
 
 .menu-button{
   padding: 0 !important;
+  margin-top: 10px;
+  float: left;
 }
 
 .create-user-form-container{

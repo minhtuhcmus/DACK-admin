@@ -23,5 +23,7 @@
   "delete": "Xóa",
   "add_skill":"Thêm kỹ năng",
   "skill_name":"Tên kỹ năng",
-  "logout":"Đăng xuất"
+  "logout":"Đăng xuất",
+  "lock": "Khóa",
+  "unlock": "Mở khóa"
 }

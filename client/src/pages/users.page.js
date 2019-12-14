@@ -45,13 +45,13 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
     checkLocation();
   });
 
-  useEffect(() => {
-    async function loadData() {
-      const res = await userApi.getUsers();
-      console.log(res.data);
-      await setUserList(res.data);
-    }
+  async function loadData() {
+    const res = await userApi.getUsers();
+    console.log(res.data);
+    await setUserList(res.data);
+  }
 
+  useEffect(() => {
     loadData();
   }, []);
 
@@ -60,7 +60,7 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
   // }
 
   return (
-    <div>
+    <div style={{height: '100%'}}>
       <Row className='page-title'>
         <h1 className='page-title-text'>{t('users')}</h1>
         <Link to='/users/create-user'>
@@ -104,11 +104,11 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
             },
             {
               title: t('action'),
-              dataIndex: 'email',
               key: 'action',
-              render: email => (
+              dataIndex: 'status',
+              render: (status, record) => (
                 <div>
-                  <Link className='action-btn' to={`${url}/${email}`}>
+                  <Link className='action-btn' to={`${url}/${record.email}`}>
                     <Popover content={(
                       <span>{t('detail')}</span>
                     )}>
@@ -118,30 +118,43 @@ const UsersPage = ({language, setshowLayout, setTab}) => {
                     </Popover>
 
                   </Link>
-
-                  {/* <Link className='action-btn' to={deleteUser(email)}>
-                    <Popover content={(
-                      <span>{t('delete')}</span>
-                    )}>
-                      <Button type='danger'>
-                        <Icon type='delete'/>
-                      </Button>
-                    </Popover>
-                  </Link> */}
+                  {
+                    record.role === 1 ?
+                    <Link className='action-btn'>
+                      <Popover content={(
+                        <span>{status === 1 ? t('lock') : t('unlock')}</span>
+                      )}>
+                        <Button className={status === 1 ? 'lock' : 'unlock'} onClick={async() => {
+                          record.status = status === 1 ? 0 : 1;
+                          await userApi.changeStatus(record.email, record);
+                          loadData();
+                        }}>
+                          <Icon type={status === 1 ? 'lock' : 'unlock'}/>
+                        </Button>
+                      </Popover>
+                    </Link>
+                    :
+                    null
+                  }
                 </div>
 
               )
-            }
+            },
           ]
         }
 
-        dataSource={userList ? userList.map((user, index) => ({
+        dataSource={
+          userList ? userList.map((user, index) => ({
           fullName: user.fullName,
           email: user.email,
           phoneNumber: user.phoneNumber,
           role: user.role,
+          status: user.status,
           key: index
-        })): null}
+        })): 
+        null
+        }
+        scroll={{ y: 350}}
       />
     </div>
   );

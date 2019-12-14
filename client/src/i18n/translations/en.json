@@ -23,5 +23,7 @@
   "delete": "Delete",
   "add_skill":"Add skill",
   "skill_name":"Skill name",
-  "logout":"Logout"
+  "logout":"Logout",
+  "lock": "Lock",
+  "unlock": "Unlock"
 }
