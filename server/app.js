@@ -7,9 +7,10 @@ const cors = require("cors");
 const passport = require('passport');
 const axios = require('axios');
 const morgan = require('morgan');
-const UserModel = require('./models/User');
+const UserModel = require('./models/AdminUser');
 
 const authenRoute = require('./routes/AuthenRoute');
+const adminRoute = require('./routes/AdminRoute');
 const userRoute = require('./routes/UserRoute');
 const skillRoute = require('./routes/SkillRoute');
 const jwtUtil = require('./authentication/jwt');
@@ -53,6 +54,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 app.use('/', authenRoute);
+app.use('/api/admins', jwtUtil.validateToken, adminRoute);
 app.use('/api/users', jwtUtil.validateToken, userRoute);
 app.use('/api/skills', jwtUtil.validateToken, skillRoute);
 
@@ -67,9 +69,12 @@ app.use(function (err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
+    console.error(err);
+
+    return res.json({
+        returnCode: 0,
+        returnMessage: "Exception. Retry Later."
+    });
 });
 
 module.exports = app;

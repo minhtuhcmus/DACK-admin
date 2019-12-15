@@ -1,11 +1,10 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const UserModel = require('../models/User');
+const UserModel = require('../models/AdminUser');
 const bcrypt = require('bcryptjs');
 const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const redis = require('../utilities/redis');
 
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -22,7 +21,7 @@ passport.use(new LocalStrategy({
         passwordField: 'password'
     },
     async function (username, password, cb) {
-        const user = await redis.getAsyncWithCallback(username, UserModel.getUser);
+        const user = await UserModel.getUser(username);
         if (!user) {
             return cb(null, false, {
                 returnCode: -3,
@@ -60,7 +59,7 @@ passport.use(new JWTStrategy({
         secretOrKey: '1612145'
     },
     async function (jwtPayload, next) {
-        const user = await redis.getAsyncWithCallback(jwtPayload.email, UserModel.getUser);
+        const user = await UserModel.getUser(jwtPayload.email);
         if (user) {
             next(null, user);
         } else {

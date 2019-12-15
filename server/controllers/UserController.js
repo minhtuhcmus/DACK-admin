@@ -1,50 +1,9 @@
 const userModel = require('../models/User');
-const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const redis = require('../utilities/redis');
-
-exports.login = function (req, res, next) {
-    passport.authenticate('local', {
-        session: false
-    }, (err, user, info) => {
-        if (err || !user) {
-            return res.json(info);
-        }
-        req.login(user, {
-            session: false
-        }, (err) => {
-            if (err) {
-                console.error("Login err: " + err);
-                return res.json({
-                    returnCode: 0,
-                    returnMessage: "Exception. Retry Later."
-                });
-            }
-
-            const token = jwt.sign({
-                email: user.email,
-                fullName: user.fullName,
-                phoneNumber: user.phoneNumber,
-            }, '1612145');
-
-            const {password, updDate, ...newUser} = req.user;
-
-            return res.json({
-                returnCode: 1,
-                returnMessage: "Login Success",
-                data: {
-                    token: token,
-                    user: newUser
-                }
-            });
-        });
-    })(req, res);
-};
 
 exports.getAllUser = async function (req, res, next) {
     try {
-        let result = await redis.getAsyncWithCallback('ALL_USER',userModel.getAllUser);
+        let result = await userModel.getAllUser();
 
         if (!result) {
             result = [];
@@ -56,27 +15,20 @@ exports.getAllUser = async function (req, res, next) {
             data: result
         })
     } catch (e) {
-        console.error(e);
-        return res.json({
-            returnCode: 0,
-            returnMessage: "Exception. Retry Later."
-        });
+        next(e);
     }
 };
 
 exports.getOneUser = async function (req, res, next) {
     try {
-        const result = await redis.getAsyncWithCallback(req.params.email, userModel.getUser);
+        const result = await userModel.getUser(req.params.email);
 
         if (!result) {
-            res.json({
+            return res.json({
                 returnCode: -3,
                 returnMessage: "User Not Found"
             });
-            return;
         }
-        delete result.password;
-        delete result.updDate;
 
         return res.json({
             returnCode: 1,
@@ -84,119 +36,29 @@ exports.getOneUser = async function (req, res, next) {
             data: result
         })
     } catch (e) {
-        console.error(e);
-        return res.json({
-            returnCode: 0,
-            returnMessage: "Exception. Retry Later."
-        });
-    }
-};
-
-exports.createUser = async function (req, res, next) {
-    try {
-        const newUser = req.body;
-
-        const find = await redis.getAsyncWithCallback(newUser.email, userModel.getUser);
-        if (find != null) {
-            res.json({
-                returnCode: -4,
-                returnMessage: "Username Is Already Existed. Please Choose Another Username."
-            });
-            return;
-        }
-
-        const result = await userModel.createUser(newUser);
-        if (result != null && result.affectedRows === 1) {
-
-            redis.del('ALL_USER');
-
-            res.json({
-                returnCode: 1,
-                returnMessage: "Success"
-            });
-        } else {
-            res.json({
-                returnCode: 0,
-                returnMessage: "Exception. Retry Later."
-            });
-        }
-    } catch (e) {
-        console.error('error', e);
-        return res.json({
-            returnCode: 0,
-            returnMessage: "Exception. Retry Later."
-        });
+        next(e);
     }
 };
 
 exports.updateUser = async function (req, res, next) {
     try {
         const username = req.params.email;
-        const newUser = req.body;
+        const newStatus = req.body.status;
 
-        const result = await userModel.updateUser(username, newUser);
+        const result = await userModel.updateUser(username, newStatus);
         if (result != null && result.affectedRows === 1) {
-            redis.del('ALL_USER');
-            redis.del(username);
+            redis.del('ALL_TEACHER');
+            redis.del(`TEACHER_${username}`);
+            redis.del(`STUDENT_${username}`);
 
-            res.json({
+            return res.json({
                 returnCode: 1,
                 returnMessage: "Success"
             });
         } else {
-            res.json({
-                returnCode: 0,
-                returnMessage: "Exception. Retry Later."
-            });
+            next('error');
         }
     } catch (e) {
-        console.error(e);
-        return res.json({
-            returnCode: 0,
-            returnMessage: "Exception. Retry Later."
-        });
-    }
-};
-
-exports.changePassword = async function (req, res, next) {
-    try {
-        const username = req.params.email;
-        const oldPassword = req.body.oldPassword;
-        const newPassword = req.body.newPassword;
-
-        const user = await userModel.getUser(username);
-
-        bcrypt.compare(oldPassword, user.password).then(async (compareRes) => {
-            if (!compareRes) {
-                return res.json({
-                    returnCode: -2,
-                    returnMessage: "Old Password Not Match"
-                });
-            }
-
-            const result = await userModel.changePassword(username, newPassword);
-            if (result != null && result.affectedRows === 1) {
-                redis.del('ALL_USER');
-                redis.del(username);
-
-                res.json({
-                    returnCode: 1,
-                    returnMessage: "Success"
-                });
-            } else {
-                res.json({
-                    returnCode: 0,
-                    returnMessage: "Exception. Retry Later."
-                });
-            }
-        });
-
-
-    } catch (e) {
-        console.error(e);
-        return res.json({
-            returnCode: 0,
-            returnMessage: "Exception. Retry Later."
-        });
+        next(e);
     }
 };

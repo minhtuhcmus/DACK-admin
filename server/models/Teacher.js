@@ -1,9 +1,8 @@
 const conn = require('../utilities/mysql');
-const bcrypt = require('bcryptjs');
 
 module.exports.getAllUser = async () => {
     const [res, f] = await conn.getConnection()
-        .query('SELECT * FROM User')
+        .query('SELECT * FROM Teacher')
         .then(([rows, fields]) => {
             return [rows, fields];
         })
@@ -19,7 +18,6 @@ module.exports.getAllUser = async () => {
 
     for (let row of res) {
         const obj = {...row};
-        delete obj.password;
         delete obj.updDate;
         result.push(obj);
     }
@@ -27,29 +25,9 @@ module.exports.getAllUser = async () => {
     return result;
 };
 
-module.exports.getUser = async (email) => {
-    const [res, f] = await conn.getConnection()
-        .query('SELECT * FROM User WHERE email = ?', [email])
-        .then(([rows, fields]) => {
-            return [rows, fields];
-        })
-        .catch(err => {
-            console.error(err.message);
-            return [null, null];
-        });
+module.exports.deleteSkill = async (email, skills) => {
 
-    if (!res || !res[0])
-        return null;
-
-    return {
-        email, fullName, phoneNumber, address, avatar, type , status
-    } = res[0];
-
-};
-
-module.exports.updateUser = async (email, status) => {
-
-    let query = `UPDATE User SET status = '${status}'where email = '${email}'`;
+    let query = `UPDATE Teacher SET skills = '${JSON.stringify(skills)}'where email = '${email}'`;
     const [res, f] = await conn.getConnection()
         .query(query).then(([rows, fields]) => {
             return [rows, fields];
