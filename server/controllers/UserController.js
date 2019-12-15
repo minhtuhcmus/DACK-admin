@@ -29,6 +29,8 @@ exports.getOneUser = async function (req, res, next) {
                 returnMessage: "User Not Found"
             });
         }
+        delete result.password;
+        delete result.updDate;
 
         return res.json({
             returnCode: 1,

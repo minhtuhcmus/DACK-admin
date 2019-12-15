@@ -18,8 +18,6 @@ module.exports.getAllContract = async () => {
 
     for (let row of res) {
         const obj = {...row};
-        delete obj.updDate;
-        obj.teachingTimes = JSON.parse(obj.teachingTimes);
         result.push(obj);
     }
 
@@ -40,7 +38,6 @@ module.exports.getContract = async (contractID) => {
     if (!res || !res[0])
         return null;
 
-    res[0].teachingTimes = JSON.parse(res[0].teachingTimes);
     return res[0];
 };
 

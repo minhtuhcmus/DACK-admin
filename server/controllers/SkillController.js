@@ -31,8 +31,6 @@ exports.getOneSkill = async function (req, res, next) {
             });
             return;
         }
-        delete result.updDate;
-        delete result.isDeleted;
 
         return res.json({
             returnCode: 1,
@@ -65,11 +63,31 @@ exports.createSkill = async function (req, res, next) {
 
 exports.updateSkill = async function (req, res, next) {
     const skillID = req.params.skillID;
+    const skill = await skillModel.getSkill(skillID);
+
     const newSkill = req.body;
 
     const result = await skillModel.updateSkill(skillID, newSkill);
     if (result != null && result.affectedRows === 1) {
         redis.del('ALL_SKILL');
+
+        const user = await teacherModel.getAllUser();
+        if (user) {
+            for (let u of user) {
+                const skills = JSON.parse(u.skills);
+                if (skills.includes(skill.skillName)) {
+                    const index = skills.indexOf(skill.skillName);
+                    skills[index] = newSkill.skillName;
+                    const result2 = await teacherModel.deleteSkill(u.email, skills);
+                    if (result2 == null || result2.affectedRows !== 1) {
+                        next('error');
+                    }
+                    redis.del(`TEACHER_${u.email}`);
+                }
+            }
+            redis.del('ALL_TEACHER');
+        }
+
         return res.json({
             returnCode: 1,
             returnMessage: "Success"
