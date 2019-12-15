@@ -20,7 +20,11 @@ module.exports.initConnection = async () => {
         charset: "utf8_general_ci",
         waitForConnections: true,
         connectionLimit: 10,
-        queueLimit: 0
+        queueLimit: 0,
+        dateStrings: [
+            'DATE',
+            'DATETIME'
+        ]
     });
 };
 
