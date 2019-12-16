@@ -7,13 +7,13 @@ import { useTranslation } from 'react-i18next';
 // import { compose } from 'redux';
 // import { LanguageToggle } from '../components';
 // import {userOnly} from '../hocs';
-import { withRouter, Link, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
+import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Icon, Table, Tag, Row, Tabs, Select, Form, Input, Modal, Drawer,
   Col, Descriptions,
   Popover } from 'antd';
 import { userApi } from '../api';
 import { addAdmin } from '../reducers/user.reducer';
-import userDetailPage from './user-detail.page';
+// import userDetailPage from './user-detail.page';
 const { Option } = Select;
 const { TabPane } = Tabs;
 const cookies = new Cookies();
@@ -156,7 +156,7 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
   const {t, i18n} = useTranslation();
   const history = useHistory();
   const currUser = cookies.get('CURR_USER');
-  const {url} = useRouteMatch();
+  // const {url} = useRouteMatch();
   const [showDrawer, setShowDrawer] = useState(false);
   const [userDetail, setUserDetail] = useState(null);
   useEffect(() => {
@@ -523,57 +523,57 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
         </TabPane>
       </Tabs>
       <Drawer
-          title={t('user_detail')}
-          placement="right"
-          closable={true}
-          onClose={async () => {
-            await setShowDrawer(false);
-          }}
-          visible={showDrawer}
-          width='25%'
-        >
-          <Row type='flex' justify='center' align='middle' className='login-container'>
-            <Col span={12} className='create-user-form-container'>
-              {
-                userDetail ? 
+        title={t('user_detail')}
+        placement="right"
+        closable={true}
+        onClose={async () => {
+          await setShowDrawer(false);
+        }}
+        visible={showDrawer}
+        width='25%'
+      >
+        <Row type='flex' justify='center' align='middle' className='login-container'>
+          <Col span={12} className='create-user-form-container'>
+            {
+              userDetail ? 
                 <>
-                {
-                  <Descriptions column={1}>
-                    <Descriptions.Item label="UserName">
-                      {userDetail.fullName}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Telephone">
-                      {userDetail.phoneNumber}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Email">
-                      {userDetail.email}
-                    </Descriptions.Item>
-                    {
-                      userDetail.role ?
-                      <Descriptions.Item label="Role">
-                        {userDetail.role === 0 ? 'SUPERADMIN' : 'ADMIN'}
+                  {
+                    <Descriptions column={1}>
+                      <Descriptions.Item label="UserName">
+                        {userDetail.fullName}
                       </Descriptions.Item>
-                      :
-                      <Descriptions.Item label="Address">
-                        {userDetail.address}
+                      <Descriptions.Item label="Telephone">
+                        {userDetail.phoneNumber}
                       </Descriptions.Item>
-                    }
-                    {
-                      userDetail.type ?
-                      <Descriptions.Item label="Role">
-                        {userDetail.type === 1 ? t('teacher') : t('student')}
-                      </Descriptions.Item>:
-                      ''
-                    }
-                  </Descriptions>
-                }
+                      <Descriptions.Item label="Email">
+                        {userDetail.email}
+                      </Descriptions.Item>
+                      {
+                        userDetail.role ?
+                          <Descriptions.Item label="Role">
+                            {userDetail.role === 0 ? 'SUPERADMIN' : 'ADMIN'}
+                          </Descriptions.Item>
+                          :
+                          <Descriptions.Item label="Address">
+                            {userDetail.address}
+                          </Descriptions.Item>
+                      }
+                      {
+                        userDetail.type ?
+                          <Descriptions.Item label="Role">
+                            {userDetail.type === 1 ? t('teacher') : t('student')}
+                          </Descriptions.Item>:
+                          ''
+                      }
+                    </Descriptions>
+                  }
                 </>  
                 :
                 ''
-              }
-            </Col> 
-          </Row>
-        </Drawer>
+            }
+          </Col> 
+        </Row>
+      </Drawer>
     </div>
   );
 };
