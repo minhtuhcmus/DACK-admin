@@ -4,4 +4,4 @@ import {
 
 export const changeLanguage = (language) => async dispatch => {
   dispatch(doChangeLanguage(language));
-}
+};

@@ -1,22 +1,22 @@
-import { Cookies } from 'react-cookie';
+// import { Cookies } from 'react-cookie';
 import { userApi } from '../../api';
 import {
-  doAddUser,
-  doAddUserFail,
-  doAddUserSuccess
+  doaddAdmin,
+  doaddAdminFail,
+  doaddAdminSuccess
 } from './user.action';
 
-const cookies = new Cookies();
+// const cookies = new Cookies();
 
-export const addUser = (data) => async dispatch => {
-  dispatch(doAddUser(data));
-  const res = await userApi.addUser(data);
+export const addAdmin = (data) => async dispatch => {
+  dispatch(doaddAdmin(data));
+  const res = await userApi.addAdmin(data);
   if(res.returnCode === 1){
-    dispatch(doAddUserSuccess());
+    dispatch(doaddAdminSuccess());
     return true;
   }
   else{
-    dispatch(doAddUserFail());
+    dispatch(doaddAdminFail());
     return false;
   }
-}
+};

@@ -23,5 +23,17 @@
   "delete": "Delete",
   "add_skill":"Add skill",
   "skill_name":"Skill name",
-  "logout":"Logout"
+  "logout":"Logout",
+  "lock": "Lock",
+  "unlock": "Unlock",
+  "status": "Status",
+  "active": "Active",
+  "block": "Blocked",
+  "all_accounts": "All Accounts",
+  "add_admin": "Add Admin",
+  "students": "Students",
+  "student": "STUDENT",
+  "teachers": "Teachers",
+  "teacher": "TEACHER",
+  "admin": "Admin"
 }

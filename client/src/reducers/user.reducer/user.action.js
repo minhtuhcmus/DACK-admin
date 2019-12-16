@@ -6,29 +6,29 @@ export default {
   ADD_USER,
   ADD_USER_SUCCESS,
   ADD_USER_FAIL 
-}
+};
 
-const doAddUser = (data) => ({
+const doaddAdmin = (data) => ({
   type: ADD_USER,
   payload:{
     data
   }
 });
 
-const doAddUserSuccess = () => ({
+const doaddAdminSuccess = () => ({
   type: ADD_USER_SUCCESS,
   payload: {
   }
 });
 
-const doAddUserFail = () => ({
+const doaddAdminFail = () => ({
   type: ADD_USER_FAIL,
   payload:{
   }
 });
 
 export {
-  doAddUser,
-  doAddUserFail,
-  doAddUserSuccess
-}
+  doaddAdmin,
+  doaddAdminFail,
+  doaddAdminSuccess
+};

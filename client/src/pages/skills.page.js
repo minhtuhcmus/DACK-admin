@@ -1,23 +1,30 @@
+/* eslint-disable react/display-name, react/prop-types */
 import React, { useState, useEffect }  from 'react';
 import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { compose } from 'redux';
-import { LanguageToggle } from '../components';
-import {userOnly} from '../hocs';
-import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
-import { Button, Icon, Table, Tag, Row, Drawer, Popover, Input } from 'antd';
+// import { compose } from 'redux';
+// import { LanguageToggle } from '../components';
+// import {userOnly} from '../hocs';
+import { withRouter, 
+  // Link, 
+  useLocation, useHistory } from 'react-router-dom';
+import { Button, Icon, Table, 
+  // Tag, 
+  Row, Drawer, 
+  // Popover, 
+  Input } from 'antd';
 import { skillApi } from '../api';
-import Slider from 'react-slick';
+// import Slider from 'react-slick';
 const cookies = new Cookies();
 const SkillsPage = ({language, setshowLayout, setTab}) => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [newSkill, setNewSkill] = useState('');
   const {t, i18n} = useTranslation();
   const history = useHistory();
-  const curr_user = cookies.get('CURR_USER');
+  const currUser = cookies.get('CURR_USER');
   useEffect(() => {
-    if(!curr_user){
+    if(!currUser){
       history.push('/login');      
     }
   });
@@ -60,14 +67,14 @@ const SkillsPage = ({language, setshowLayout, setTab}) => {
       
       <Row className='page-title'>
         <h1 className='page-title-text'>{t('skills')}</h1>
-          <Button className='float-right-btn' type='primary' onClick={() => {
-            setShowDrawer(true);
-          }}>
-            <Icon type='plus'/>
-            {
-              t('add_skill')
-            }
-          </Button>
+        <Button className='float-right-btn' type='primary' onClick={() => {
+          setShowDrawer(true);
+        }}>
+          <Icon type='plus'/>
+          {
+            t('add_skill')
+          }
+        </Button>
       </Row>
       <Drawer
         title="Add skill"
@@ -85,12 +92,12 @@ const SkillsPage = ({language, setshowLayout, setTab}) => {
           onChange={async (e) => {
             await setNewSkill(e.target.value);
           }}
-          />
+        />
         <Button 
           className='add-skill-btn' 
           type='primary'
           onClick={async () => {
-            if(newSkill!=''&&newSkill){
+            if(newSkill!==''&&newSkill){
               await skillApi.addSkill({skillName: newSkill});
               setShowDrawer(false);
               setNewSkill('');
@@ -101,44 +108,47 @@ const SkillsPage = ({language, setshowLayout, setTab}) => {
         >{t('add_skill')}</Button>
       </Drawer>
       <Table 
-          columns={
-            [
-              {
-                title: t('skill_name'),
-                dataIndex: 'skillName',
-                key: 'skillName'
-              },
-              {
-                title: t('action'),
-                dataIndex: 'skillID',
-                key: 'action',
-                render: skillID => (
-                  <div> 
-                    <Button icon='delete' type='danger' onClick={ async () => {
-                      await skillApi.deleteSkill(skillID);
-                      loadData();
-                    }}/>
-                  </div>
-                )
-              }
-            ]
-          }
+        columns={
+          [
+            {
+              title: t('skill_name'),
+              dataIndex: 'skillName',
+              key: 'skillName',
+              width: 100
+            },
+            {
+              title: t('action'),
+              dataIndex: 'skillID',
+              key: 'action',
+              width: 100,
+              render: skillID => (
+                <div> 
+                  <Button icon='delete' type='danger' onClick={ async () => {
+                    await skillApi.deleteSkill(skillID);
+                    loadData();
+                  }}/>
+                </div>
+              )
+            }
+          ]
+        }
 
-          dataSource={skillList ? skillList.map((skill, index) => ({
-            skillName: skill.skillName,
-            skillID: skill.skillID,
-            key: index
-          })): null}
-        />
+        dataSource={skillList ? skillList.map((skill, index) => ({
+          skillName: skill.skillName,
+          skillID: skill.skillID,
+          key: index
+        })): null}
+        scroll={{ y: 350}}
+      />
     </div>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   language: state.appReducer.language  
 }); 
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = () => ({
 
 });
 

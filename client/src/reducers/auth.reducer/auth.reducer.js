@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import authAction from './auth.action';
 
 const INITIAL_STATE = {
@@ -6,7 +8,7 @@ const INITIAL_STATE = {
   user: undefined,
   token: undefined,
   error: true
-}
+};
 
 const applyLogout = (state, action) => ({
   ...state,

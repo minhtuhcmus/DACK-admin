@@ -2,7 +2,7 @@ import userAction from './app.action';
 
 const INITIAL_STATE = {
   language: null
-}
+};
 
 const applyChangeLanguage = (state, action) => ({
   ...state,
@@ -16,6 +16,6 @@ const reducer = (state = INITIAL_STATE, action) => {
     }
     default: return state;
   }
-}
+};
 
 export default reducer;

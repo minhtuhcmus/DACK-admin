@@ -2,58 +2,45 @@ import { Cookies } from 'react-cookie';
 const cookies = new Cookies();
 const API_URL = 'http://167.179.80.90:3002';
 
-const addSkill = async(data) => {
-  const res = await fetch(`${API_URL}/api/skills`,{
-    method: 'POST',
+const getContracts = async() => {
+  const res = await fetch(`${API_URL}/api/contracts`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
+    }
+  });
+  const resData = await res.json();
+  return resData;
+};
+
+const getContract = async(id) => {
+  const res = await fetch(`${API_URL}/api/contracts/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
+    }
+  });
+  const resData = await res.json();
+  return resData;
+};
+
+const changeStatus = async (id, newStatus) => {
+  const res = await fetch(`${API_URL}/api/contracts/${id}`, {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify({status: newStatus})
   });
   const resData = await res.json();
   return resData;
-};
-
-const getSkills = async() => {
-  const res = await fetch(`${API_URL}/api/skills`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
-    }
-  });
-  const resData = await res.json();
-  return resData;
-};
-
-const getSkill = async(id) => {
-  const res = await fetch(`${API_URL}/api/skills/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
-    }
-  });
-  const resData = await res.json();
-  return resData;
-};
-
-const deleteSkill = async(id) => {
-  const res = await fetch(`${API_URL}/api/skills/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
-    }
-  });
-  const resData = await res.json();
-  return resData;
-};
+}
 
 export default{
-  addSkill,
-  getSkill,
-  getSkills,
-  deleteSkill
+  getContract,
+  getContracts,
+  changeStatus
 };

@@ -10,7 +10,7 @@ export default {
   LOGIN_SUCCESS,
   CLEAR_RESULT,
   LOGOUT
-}
+};
 
 const doClearResult = () => ({
   type: CLEAR_RESULT
@@ -28,7 +28,7 @@ const doLogin = (email, password) => ({
     email,
     password
   }
-})
+});
 
 const doLoginSuccess = (user) => ({
   type: LOGIN_SUCCESS,
@@ -50,4 +50,4 @@ export {
   doLoginFail,
   doLoginSuccess,
   doLogout
-}
+};

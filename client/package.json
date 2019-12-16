@@ -18,11 +18,12 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "eslint ./src && react-scripts start",
     "build": "react-scripts build",
     "deploy": "pm2 start ./runserver.sh --name web-final-project-admin-frontend",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint:fix": "eslint --fix ./src"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-plugin-react": "^7.17.0"
   }
 }

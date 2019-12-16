@@ -1,7 +1,7 @@
 import { Cookies } from 'react-cookie';
 import { authApi } from '../../api';
 import {
-  doClearResult,
+  // doClearResult,
   doLogin,
   doLoginFail,
   doLoginSuccess,
@@ -24,10 +24,10 @@ export const login = (email, password) => async dispatch => {
     dispatch(doLoginFail(res.message));
     return false;
   }
-}
+};
 
 export const logout = () => async dispatch => {
   
   dispatch(doLogout());
   cookies.set('CURR_USER', '');
-}
+};
