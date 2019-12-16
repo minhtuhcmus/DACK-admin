@@ -11,9 +11,9 @@ const addSkill = async(data) => {
     },
     body: JSON.stringify(data)
   });
-  const res_data = await res.json();
-  return res_data;
-}
+  const resData = await res.json();
+  return resData;
+};
 
 const getSkills = async() => {
   const res = await fetch(`${API_URL}/api/skills`, {
@@ -23,9 +23,9 @@ const getSkills = async() => {
       'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
     }
   });
-  const res_data = await res.json();
-  return res_data;
-}
+  const resData = await res.json();
+  return resData;
+};
 
 const getSkill = async(id) => {
   const res = await fetch(`${API_URL}/api/skills/${id}`, {
@@ -35,9 +35,9 @@ const getSkill = async(id) => {
       'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
     }
   });
-  const res_data = await res.json();
-  return res_data;
-}
+  const resData = await res.json();
+  return resData;
+};
 
 const deleteSkill = async(id) => {
   const res = await fetch(`${API_URL}/api/skills/${id}`, {
@@ -47,13 +47,13 @@ const deleteSkill = async(id) => {
       'Authorization': `Bearer ${cookies.get('MY_TOKEN')}`
     }
   });
-  const res_data = await res.json();
-  return res_data;
-}
+  const resData = await res.json();
+  return resData;
+};
 
 export default{
   addSkill,
   getSkill,
   getSkills,
   deleteSkill
-}
+};

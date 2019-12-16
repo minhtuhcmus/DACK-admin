@@ -1,21 +1,26 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect }  from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { LanguageToggle } from '../components';
-import {userOnly} from '../hocs';
+// import { LanguageToggle } from '../components';
+// import {userOnly} from '../hocs';
 import { Cookies } from 'react-cookie';
-import { withRouter, Link, useLocation, useHistory, useParams } from 'react-router-dom';
+import { withRouter, 
+  // Link, 
+  useLocation, useHistory, useParams } from 'react-router-dom';
 import { Button, Icon, Form, Input, Row, Col, Select } from 'antd';
-import { addUser } from '../reducers/user.reducer';
+import { addAdmin } from '../reducers/user.reducer';
 import { userApi } from '../api';
 const { Option } = Select;
-const CreateUserForm = ({form, createUser, isAddingUser, user}) => {
-  const [confirmDirty, setConfirmDirty] = useState(false);
+const CreateUserForm = ({form, createUser, 
+  // isAddingUser, 
+  user}) => {
+  // const [confirmDirty, setConfirmDirty] = useState(false);
   const {t} = useTranslation();
   const history = useHistory();
   const handleSubmit = e => {
     e.preventDefault();
-      form.validateFields( async (err, values) =>  {
+    form.validateFields( async (err, values) =>  {
       if (!err) {
         const res = await createUser({
           email: values.email,
@@ -40,18 +45,18 @@ const CreateUserForm = ({form, createUser, isAddingUser, user}) => {
       sm: { span: 16 },
     },
   };
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 8,
-      },
-    },
-  };
+  // const tailFormItemLayout = {
+  //   wrapperCol: {
+  //     xs: {
+  //       span: 24,
+  //       offset: 0,
+  //     },
+  //     sm: {
+  //       span: 16,
+  //       offset: 8,
+  //     },
+  //   },
+  // };
   const prefixSelector = getFieldDecorator('prefix', {
     initialValue: '84',
   })(
@@ -60,74 +65,74 @@ const CreateUserForm = ({form, createUser, isAddingUser, user}) => {
     </Select>,
   );
 
-  const compareToFirstPassword = (rule, value, callback) => {
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  };
+  // const compareToFirstPassword = (rule, value, callback) => {
+  //   if (value && value !== form.getFieldValue('password')) {
+  //     callback('Two passwords that you enter is inconsistent!');
+  //   } else {
+  //     callback();
+  //   }
+  // };
 
-  const validateToNextPassword = (rule, value, callback) => {
-    if (value && confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
-    }
-    callback();
-  };
+  // const validateToNextPassword = (rule, value, callback) => {
+  //   if (value && confirmDirty) {
+  //     form.validateFields(['confirm'], { force: true });
+  //   }
+  //   callback();
+  // };
 
-  const handleConfirmBlur = async e => {
-    const { value } = e.target;
-    await setConfirmDirty(confirmDirty || !!value);
-  };
+  // const handleConfirmBlur = async e => {
+  //   const { value } = e.target;
+  //   await setConfirmDirty(confirmDirty || !!value);
+  // };
 
   return (
     <>
-    {
-      user ?
-      <Form {...formItemLayout} onSubmit={handleSubmit}> 
-        <Form.Item label={t('email')}>
-          {getFieldDecorator('email', {
-            rules: [
-              {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              },
-              {
-                required: true,
-                message: 'Please input your E-mail!',
-              },
-            ],
-            initialValue: user.email
-          })(<Input />)}
-        </Form.Item>     
-        <Form.Item label={t('full_name')}>
-          {getFieldDecorator('fullName', {
-            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
-            initialValue: user.fullName
-          })(<Input/>)}
-        </Form.Item>
-        <Form.Item label={t('phone_number')}>
-          {getFieldDecorator('phoneNumber', {
-            rules: [{ required: true, message: 'Please input your phone number!' }],
-            initialValue: user.phoneNumber 
-          })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
-        </Form.Item>
-        {/* <Form.Item {...tailFormItemLayout}>
+      {
+        user ?
+          <Form {...formItemLayout} onSubmit={handleSubmit}> 
+            <Form.Item label={t('email')}>
+              {getFieldDecorator('email', {
+                rules: [
+                  {
+                    type: 'email',
+                    message: 'The input is not valid E-mail!',
+                  },
+                  {
+                    required: true,
+                    message: 'Please input your E-mail!',
+                  },
+                ],
+                initialValue: user.email
+              })(<Input />)}
+            </Form.Item>     
+            <Form.Item label={t('full_name')}>
+              {getFieldDecorator('fullName', {
+                rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+                initialValue: user.fullName
+              })(<Input/>)}
+            </Form.Item>
+            <Form.Item label={t('phone_number')}>
+              {getFieldDecorator('phoneNumber', {
+                rules: [{ required: true, message: 'Please input your phone number!' }],
+                initialValue: user.phoneNumber 
+              })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
+            </Form.Item>
+            {/* <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" loading={isAddingUser}>
             {t('add_user')}
           </Button>
         </Form.Item> */}
-      </Form>
-      :
-      <></>
-    }
+          </Form>
+          :
+          <></>
+      }
     </>
   );
-}
+};
 
 const UserDetailPage = ({language, isAddingUser, createUser, setshowLayout}) => {
 
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
   const WrappedCreateUserForm = Form.create()(CreateUserForm);
   const cookies = new Cookies(); 
   const history = useHistory();
@@ -138,9 +143,9 @@ const UserDetailPage = ({language, isAddingUser, createUser, setshowLayout}) => 
     i18n.changeLanguage(language);
   }, [language]);
 
-  const curr_user = cookies.get('CURR_USER');
+  const currUser = cookies.get('CURR_USER');
   useEffect(() => {
-    if(!curr_user){
+    if(!currUser){
       history.push('/login');      
     }
   });
@@ -173,29 +178,29 @@ const UserDetailPage = ({language, isAddingUser, createUser, setshowLayout}) => 
   },[]);
 
   const goBack = () => {
-    history.goBack()
-  }
+    history.goBack();
+  };
 
   return (
     <>
-    {
-      !cookies.get('CURR_USER') ?
-      history.push('/')
-      :
-      <Row type='flex' justify='center' align='middle' className='login-container'>
-        <Col span={2}>
-          <Button className='menu-button' type='link' onClick={goBack}>
-            <Icon type='arrow-left' style={{fontSize:'32px', margin:'4px', }}/>
-          </Button>
-        </Col>
-        <Col span={12} className='create-user-form-container'>
-          <WrappedCreateUserForm createUser={createUser} isAddingUser={isAddingUser} user={user}/>
-        </Col> 
-      </Row>
-    }
+      {
+        !cookies.get('CURR_USER') ?
+          history.push('/')
+          :
+          <Row type='flex' justify='center' align='middle' className='login-container'>
+            <Col span={2}>
+              <Button className='menu-button' type='link' onClick={goBack}>
+                <Icon type='arrow-left' style={{fontSize:'32px', margin:'4px', }}/>
+              </Button>
+            </Col>
+            <Col span={12} className='create-user-form-container'>
+              <WrappedCreateUserForm createUser={createUser} isAddingUser={isAddingUser} user={user}/>
+            </Col> 
+          </Row>
+      }
     </>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   language: state.appReducer.language,
@@ -203,7 +208,7 @@ const mapStateToProps = (state) => ({
 }); 
 
 const mapDispatchToProps = (dispatch) => ({
-  createUser: (data) => dispatch(addUser(data))
+  createUser: (data) => dispatch(addAdmin(data))
 });
 
 export default withRouter(connect(

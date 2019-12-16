@@ -28,5 +28,12 @@
   "unlock": "Mở khóa",
   "status": "Trạng thái",
   "active": "Hoạt động",
-  "block": "Bị chặn"
+  "block": "Bị chặn",
+  "all_accounts": "Tất cả tài khoản",
+  "add_admin": "Thêm Admin",
+  "students": "Người học",
+  "student": "STUDENT",
+  "teachers": "Người dạy",
+  "teacher": "TEACHER",
+  "admin": "Admin"
 }

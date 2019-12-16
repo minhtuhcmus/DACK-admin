@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
 import AppRouter from './routes';
@@ -17,7 +17,7 @@ const App = () => {
         </I18nextProvider>
       </Provider>
     </CookiesProvider>
-    )
-}
+  );
+};
 
 export default App;

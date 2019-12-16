@@ -1,20 +1,27 @@
-import React, { useState, useEffect }  from 'react';
+
+/* eslint-disable react/prop-types */
+
+import React, { 
+  // useState, 
+  useEffect }  from 'react';
 import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { compose } from 'redux';
-import { LanguageToggle } from '../components';
-import {userOnly} from '../hocs';
+// import { compose } from 'redux';
+// import { LanguageToggle } from '../components';
+// import {userOnly} from '../hocs';
 import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
-import { Button, Icon } from 'antd';
+import { Button, 
+  // Icon 
+} from 'antd';
 const cookies = new Cookies();
 const DashboardPage = ({language, setshowLayout, setTab}) => {
 
   const {t, i18n} = useTranslation();
   const history = useHistory();
-  const curr_user = cookies.get('CURR_USER');
+  const currUser = cookies.get('CURR_USER');
   useEffect(() => {
-    if(!curr_user){
+    if(!currUser){
       history.push('/login');      
     }
   });
@@ -54,13 +61,13 @@ const DashboardPage = ({language, setshowLayout, setTab}) => {
       </Link>
     </div>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   language: state.appReducer.language  
 }); 
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = () => ({
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DashboardPage));

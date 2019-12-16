@@ -1,18 +1,24 @@
-import React, { useState, useEffect } from 'react'; 
+/* eslint-disable react/prop-types */
+
+import React, { useState, 
+  // useEffect 
+} from 'react'; 
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DashboardPage, LoginPage, CreateUserPage, UsersPage, SkillsPage, UserDetailPage } from './pages';
 import { useTranslation } from 'react-i18next';
 import { Layout, Menu, Icon, Button } from 'antd';
 import {LanguageToggle } from './components';
-import logo from './assets/logo225.png';
+// import logo from './assets/logo225.png';
 import { logout } from './reducers/auth.reducer';
-const { Header, Footer, Sider, Content } = Layout;
-const { SubMenu } = Menu;
+const { Header, 
+  // Footer, 
+  Sider, Content } = Layout;
+// const { SubMenu } = Menu;
 
 
 const AppRouter = ({logout}) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [showLayout, setshowLayout] = useState(true);
   const [collapsed, setCollapsed] = useState(true);
   const [tab, setTab] = useState(null);
@@ -82,7 +88,7 @@ const AppRouter = ({logout}) => {
                 <Route path="/login" >
                   <LoginPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
-                <Route exact path='/users/create-user'>
+                <Route exact path='/users/create-admin'>
                   <CreateUserPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
                 <Route exact path='/users'>
@@ -91,7 +97,7 @@ const AppRouter = ({logout}) => {
                 <Route path='/skills'>
                   <SkillsPage setshowLayout={setshowLayout} setTab={setTab}/>  
                 </Route>
-                <Route path={`/users/:email`}>
+                <Route path={'/users/:email'}>
                   <UserDetailPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
                 <Route path='/'>
@@ -104,9 +110,9 @@ const AppRouter = ({logout}) => {
       </Layout>
     </Router>    
   );
-}
+};
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
 }); 
 
 const mapDispatchToProps = (dispatch) => ({

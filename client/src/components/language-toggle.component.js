@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'; 
 import { Switch } from 'antd';
 import { connect } from 'react-redux';
@@ -23,7 +24,7 @@ const LanguageToggle = ({language, changeLanguage}) => {
       setChecked(checked);
     }}></Switch>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   language: state.appReducer.language

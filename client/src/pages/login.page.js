@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { doLogin } from '../reducers/auth.reducer';
+/* eslint-disable react/prop-types */
+import React, { useEffect } from 'react';
+// import { doLogin } from '../reducers/auth.reducer';
 import {connect} from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { withRouter, useLocation, useHistory } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd';
 import logo from '../assets/logo225.png';
 import { login } from '../reducers/auth.reducer';
-import Password from 'antd/lib/input/Password';
+// import Password from 'antd/lib/input/Password';
 import { Cookies } from 'react-cookie';
 
 const NormalLoginForm = ({ form, login }) => {
@@ -14,7 +15,7 @@ const NormalLoginForm = ({ form, login }) => {
   const history = useHistory();
   const handleSubmit = e => {
     e.preventDefault();
-      form.validateFields( async (err, values) =>  {
+    form.validateFields( async (err, values) =>  {
       if (!err) {
         const res = await login(values.email, values.password);
         if(res){
@@ -55,17 +56,17 @@ const NormalLoginForm = ({ form, login }) => {
           valuePropName: 'checked',
           initialValue: true,
         })(<Checkbox>{t('remember_me')}</Checkbox>)}
-        <a className="login-form-forgot" href="">
+        <a className="login-form-forgot" href="/">
           {t('forgot_password')}
         </a>
         <Button type="primary" htmlType="submit" className="login-form-button">
           {t('login')}
         </Button>
-      {t('or')} <a href="">{t('register_now')}</a>
+        {t('or')} <a href="/">{t('register_now')}</a>
       </Form.Item>
     </Form>
   );
-}
+};
 
 const LoginPage = ({language, setshowLayout, login}) => {
   const {i18n} = useTranslation();
@@ -87,25 +88,25 @@ const LoginPage = ({language, setshowLayout, login}) => {
   });
   useEffect(() => {
     i18n.changeLanguage(language);
-  }, [language]);
+  }, [language, i18n]);
 
   return (
     <>
-    {
-      cookies.get('CURR_USER') ?
-      history.push('/')
-      :
-      <Row type='flex' justify='center' align='middle' className='login-container'>
-        <Col>
-          <img className='app-logo' alt='app-logo' src={logo}/>
-          <WrappedNormalLoginForm login={login}/>
-        </Col> 
-      </Row>
-    }
+      {
+        cookies.get('CURR_USER') ?
+          history.push('/')
+          :
+          <Row type='flex' justify='center' align='middle' className='login-container'>
+            <Col>
+              <img className='app-logo' alt='app-logo' src={logo}/>
+              <WrappedNormalLoginForm login={login}/>
+            </Col> 
+          </Row>
+      }
     </>
     
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   language: state.appReducer.language

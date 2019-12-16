@@ -1,4 +1,4 @@
-const API_URL = 'http://167.179.80.90:3002'
+const API_URL = 'http://167.179.80.90:3002';
 
 const login = async (email, password) => {
   const res = await fetch(`${API_URL}/login`, {
@@ -13,8 +13,8 @@ const login = async (email, password) => {
   });
   const data = await res.json();
   return data;
-}
+};
 
 export default {
   login
-}
+};

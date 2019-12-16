@@ -1,20 +1,22 @@
+/* eslint-disable no-unused-vars */
+
 import userAction from './user.action';
 
 const INITIAL_STATE = {
   isAddingUser: false
-}
+};
 
-const applyAddUser = (state, action) => ({
+const applyaddAdmin = (state, action) => ({
   ...state,
   isAddingUser: true
 });
 
-const applyAddUserFail = (state, action) => ({
+const applyaddAdminFail = (state, action) => ({
   ...state,
   isAddingUser: false
 });
 
-const applyAddUserSuccess = (state, action) => ({
+const applyaddAdminSuccess = (state, action) => ({
   ...state,
   isAddingUser: false
 });
@@ -22,19 +24,19 @@ const applyAddUserSuccess = (state, action) => ({
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case userAction.ADD_USER:{
-      return applyAddUser(state, action);
+      return applyaddAdmin(state, action);
     }
 
     case userAction.ADD_USER_FAIL:{
-      return applyAddUserFail(state, action);
+      return applyaddAdminFail(state, action);
     }
 
     case userAction.ADD_USER_SUCCESS:{
-      return applyAddUserSuccess(state, action);
+      return applyaddAdminSuccess(state, action);
     }
 
     default: return state;
   }
-}
+};
 
 export default reducer;

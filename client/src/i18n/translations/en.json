@@ -28,5 +28,12 @@
   "unlock": "Unlock",
   "status": "Status",
   "active": "Active",
-  "block": "Blocked"
+  "block": "Blocked",
+  "all_accounts": "All Accounts",
+  "add_admin": "Add Admin",
+  "students": "Students",
+  "student": "STUDENT",
+  "teachers": "Teachers",
+  "teacher": "TEACHER",
+  "admin": "Admin"
 }

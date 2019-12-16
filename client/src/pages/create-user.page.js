@@ -1,13 +1,16 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect }  from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { LanguageToggle } from '../components';
-import {userOnly} from '../hocs';
+// import { LanguageToggle } from '../components';
+// import {userOnly} from '../hocs';
 import { Cookies } from 'react-cookie';
-import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
+import { withRouter, 
+  // Link, 
+  useLocation, useHistory } from 'react-router-dom';
 import { Button, Icon, Form, Input, Row, Col, Select } from 'antd';
-import { addUser } from '../reducers/user.reducer';
-import { func } from 'prop-types';
+import { addAdmin } from '../reducers/user.reducer';
+// import { func } from 'prop-types';
 const { Option } = Select;
 const CreateUserForm = ({form, createUser, isAddingUser}) => {
   const [confirmDirty, setConfirmDirty] = useState(false);
@@ -15,7 +18,7 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
   const history = useHistory();
   const handleSubmit = e => {
     e.preventDefault();
-      form.validateFields( async (err, values) =>  {
+    form.validateFields( async (err, values) =>  {
       if (!err) {
         const res = await createUser({
           email: values.email,
@@ -23,6 +26,7 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
           fullName: values.fullName,
           phoneNumber: values.phoneNumber
         });
+        console.log('create admin',res);
         if(res){
           history.push('/users');
         }
@@ -139,20 +143,20 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
       </Form.Item>
     </Form>
   );
-}
+};
 
 const CreateUserPage = ({language, isAddingUser, createUser, setshowLayout}) => {
 
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
   const WrappedCreateUserForm = Form.create()(CreateUserForm);
   const cookies = new Cookies(); 
   const history = useHistory();
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
-  const curr_user = cookies.get('CURR_USER');
+  const currUser = cookies.get('CURR_USER');
   useEffect(() => {
-    if(!curr_user){
+    if(!currUser){
       history.push('/login');      
     }
   });
@@ -176,29 +180,29 @@ const CreateUserPage = ({language, isAddingUser, createUser, setshowLayout}) => 
   });
 
   const goBack = () => {
-    history.goBack()
-  }
+    history.goBack();
+  };
 
   return (
     <>
-    {
-      !cookies.get('CURR_USER') ?
-      history.push('/')
-      :
-      <Row type='flex' justify='center' align='middle' className='login-container'>
-        <Col span={2}>
-          <Button className='menu-button' type='link' onClick={goBack}>
-            <Icon type='arrow-left' style={{fontSize:'32px', margin:'4px', }}/>
-          </Button>
-        </Col>
-        <Col span={12} className='create-user-form-container'>
-          <WrappedCreateUserForm createUser={createUser} isAddingUser={isAddingUser}/>
-        </Col> 
-      </Row>
-    }
+      {
+        !cookies.get('CURR_USER') ?
+          history.push('/')
+          :
+          <Row type='flex' justify='center' align='middle' className='login-container'>
+            <Col span={2}>
+              <Button className='menu-button' type='link' onClick={goBack}>
+                <Icon type='arrow-left' style={{fontSize:'32px', margin:'4px', }}/>
+              </Button>
+            </Col>
+            <Col span={12} className='create-user-form-container'>
+              <WrappedCreateUserForm createUser={createUser} isAddingUser={isAddingUser}/>
+            </Col> 
+          </Row>
+      }
     </>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   language: state.appReducer.language,
@@ -206,7 +210,7 @@ const mapStateToProps = (state) => ({
 }); 
 
 const mapDispatchToProps = (dispatch) => ({
-  createUser: (data) => dispatch(addUser(data))
+  createUser: (data) => dispatch(addAdmin(data))
 });
 
 export default withRouter(connect(
