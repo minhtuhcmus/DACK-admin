@@ -2,7 +2,7 @@ const conn = require('../utilities/mysql');
 
 module.exports.getAllComplaint = async () => {
     const [res, f] = await conn.getConnection()
-        .query('SELECT * FROM Complaint')
+        .query('SELECT * FROM Complaint WHERE status=2')
         .then(([rows, fields]) => {
             return [rows, fields];
         })
@@ -43,7 +43,6 @@ module.exports.getComplaint = async (complaintID) => {
 };
 
 module.exports.updateStatus = async (complaintID, status) => {
-
     let query = `UPDATE Complaint SET status = '${status}'where complaintID = '${complaintID}'`;
     const [res, f] = await conn.getConnection()
         .query(query).then(([rows, fields]) => {

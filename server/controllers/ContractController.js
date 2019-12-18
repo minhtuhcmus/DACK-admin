@@ -45,15 +45,22 @@ exports.updateContract = async function (req, res, next) {
         const contractID = req.params.contractID;
         const newStatus = req.body.status;
 
+        if (newStatus !== 0 || newStatus !== 1) {
+            return res.json({
+                    returnCode: -6,
+                    returnMessage: "Status Not Valid"
+                }
+            )
+        }
+
         const contract = await contractModel.getContract(contractID);
-        if (!contract){
+        if (!contract) {
             next('error');
         }
 
         const result = await contractModel.updateStatus(contractID, newStatus);
 
         if (result != null && result.affectedRows === 1) {
-            redis.del('ALL_CONTRACT');
             redis.del(`CONTRACT_${contractID}`);
             redis.del(`CONTRACT_BY_TEACHER_${contract.teacherEmail}`);
             redis.del(`CONTRACT_BY_STUDENT_${contract.studentEmail}`);

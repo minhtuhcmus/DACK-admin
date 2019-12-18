@@ -42,8 +42,10 @@ module.exports.getContract = async (contractID) => {
 };
 
 module.exports.updateStatus = async (contractID, status) => {
+    const today = new Date();
+    const endDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-    let query = `UPDATE Contract SET status = '${status}'where contractID = '${contractID}'`;
+    let query = `UPDATE Contract SET status = '${status}', endDate = '${endDate}' where contractID = '${contractID}'`;
     const [res, f] = await conn.getConnection()
         .query(query).then(([rows, fields]) => {
             return [rows, fields];
