@@ -1,6 +1,7 @@
 import { Cookies } from 'react-cookie';
+import { API_URL } from '../constants';
+
 const cookies = new Cookies();
-const API_URL = 'http://167.179.80.90:3002';
 
 const getContracts = async() => {
   const res = await fetch(`${API_URL}/api/contracts`, {
@@ -27,6 +28,7 @@ const getContract = async(id) => {
 };
 
 const changeStatus = async (id, newStatus) => {
+  console.log(id, newStatus);
   const res = await fetch(`${API_URL}/api/contracts/${id}`, {
     method: 'PUT',
     headers: {
@@ -36,8 +38,9 @@ const changeStatus = async (id, newStatus) => {
     body: JSON.stringify({status: newStatus})
   });
   const resData = await res.json();
+  console.log(resData);
   return resData;
-}
+};
 
 export default{
   getContract,

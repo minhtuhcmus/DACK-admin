@@ -1,6 +1,7 @@
 import { Cookies } from 'react-cookie';
+import { API_URL } from '../constants';
 const cookies = new Cookies();
-const API_URL = 'http://167.179.80.90:3002';
+
 
 const addSkill = async(data) => {
   const res = await fetch(`${API_URL}/api/skills`,{

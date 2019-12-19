@@ -85,6 +85,12 @@ const AppRouter = ({logout}) => {
                     <span>{t('contracts')}</span>
                   </Link>
                 </Menu.Item>
+                <Menu.Item key="/chats">
+                  <Link to="/chats">
+                    <Icon type="mail" />
+                    <span>{t('chats')}</span>
+                  </Link>
+                </Menu.Item>
               </Menu>
             </div>
           </Sider>

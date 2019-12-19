@@ -35,5 +35,9 @@
   "student": "STUDENT",
   "teachers": "Người dạy",
   "teacher": "TEACHER",
-  "admin": "Admin"
+  "admin": "Admin",
+  "cancel": "HỦY",
+  "done": "HOÀN THÀNH",
+  "waiting": "CHỜ XÁC NHẬN",
+  "ongoing": "ĐANG DẠY" 
 }

@@ -3,10 +3,10 @@ import { Provider } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
 import AppRouter from './routes';
 import store from './store';
+import 'antd/dist/antd.css';
 import './style';
 import {I18nextProvider} from 'react-i18next';
 import i18n from './i18n';
-import 'antd/dist/antd.css';
 
 const App = () => {
   return (

@@ -1,7 +1,7 @@
 import { Cookies } from 'react-cookie';
-const cookies = new Cookies();
 
-const API_URL = 'http://167.179.80.90:3002';
+import { API_URL } from '../constants';
+const cookies = new Cookies();
 
 const addAdmin = async (data) => {
   const res = await fetch(`${API_URL}/api/admins`, {
