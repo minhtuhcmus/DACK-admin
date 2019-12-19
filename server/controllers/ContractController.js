@@ -45,7 +45,7 @@ exports.updateContract = async function (req, res, next) {
         const contractID = req.params.contractID;
         const newStatus = req.body.status;
 
-        if (newStatus !== 0 || newStatus !== 1) {
+        if (newStatus !== 0 && newStatus !== 1) {
             return res.json({
                     returnCode: -6,
                     returnMessage: "Status Not Valid"

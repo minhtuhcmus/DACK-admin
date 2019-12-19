@@ -46,7 +46,7 @@ exports.updateComplaint = async function (req, res, next) {
         const complaintID = req.params.complaintID;
         const newStatus = req.body.status;
 
-        if (newStatus !== 0 || newStatus !== 1) {
+        if (newStatus !== 0 && newStatus !== 1) {
             return res.json({
                     returnCode: -6,
                     returnMessage: "Status Not Valid"
@@ -104,6 +104,12 @@ exports.getChatHistory = async function (req, res, next) {
                 "sender": 2,
                 "message": "hello teacher"
             },
+            {
+                "timestamp": "2019-12-15 15:08:10",
+                "sender": 2,
+                "message": "how are you ?"
+            }
+            ,
             {
                 "timestamp": "2019-12-15 15:08:30",
                 "sender": 1,
