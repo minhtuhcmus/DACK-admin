@@ -3,20 +3,12 @@ import React, { useState, useEffect }  from 'react';
 import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-// import { compose } from 'redux';
-// import { LanguageToggle } from '../components';
-// import {userOnly} from '../hocs';
 import { withRouter, 
-  // Link, 
   useLocation, useHistory } from 'react-router-dom';
 import { Button, Table, 
-  // Tag,  
   Col, Row, Modal, Radio,
-  // Popover, 
 } from 'antd';
 import { contractApi } from '../api';
-// import { T } from 'antd/lib/upload/utils';
-// import Slider from 'react-slick';
 const cookies = new Cookies();
 const ContractsPage = ({language, setshowLayout, setTab}) => {
   const [showModal, setShowModal] = useState(false);
@@ -33,10 +25,6 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
-
-  // useEffect(() => {
-  //   i18n.changeLanguage(language);
-  // }, [language]);
 
   const location = useLocation();
   const [contractList, setContractList] = useState(null);
@@ -204,7 +192,12 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                 <Col span={12}>
                   <Radio.Group value={contractDetail.status} onChange={async (e) => {
                     console.log('value', e.target.value);
-                    await contractApi.changeStatus(contractDetail.contractID, e.target.value);
+                    let res = await contractApi.changeStatus(contractDetail.contractID, e.target.value);
+                    if(res.returnCode === 1){
+                      let newContract = await contractApi.getContract(contractDetail.contractID);
+                      console.log('newContract', newContract);
+                      setContractDetail(newContract.data);
+                    }
                     loadData();
                   }}>
                     <Radio.Button value={0}>{t('cancel')}</Radio.Button>

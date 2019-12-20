@@ -2,20 +2,15 @@
 import React, { useState, useEffect }  from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-// import { LanguageToggle } from '../components';
-// import {userOnly} from '../hocs';
 import { Cookies } from 'react-cookie';
 import { withRouter, 
-  // Link, 
   useLocation, useHistory, useParams } from 'react-router-dom';
 import { Button, Icon, Form, Input, Row, Col, Select } from 'antd';
 import { addAdmin } from '../reducers/user.reducer';
 import { userApi } from '../api';
 const { Option } = Select;
 const CreateUserForm = ({form, createUser, 
-  // isAddingUser, 
   user}) => {
-  // const [confirmDirty, setConfirmDirty] = useState(false);
   const {t} = useTranslation();
   const history = useHistory();
   const handleSubmit = e => {

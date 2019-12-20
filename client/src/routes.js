@@ -1,20 +1,25 @@
 /* eslint-disable react/prop-types */
 
 import React, { useState, 
-  // useEffect 
 } from 'react'; 
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { DashboardPage, LoginPage, CreateUserPage, UsersPage, SkillsPage, UserDetailPage, ContractsPage } from './pages';
+import { 
+  DashboardPage, 
+  LoginPage, 
+  CreateUserPage, 
+  UsersPage, 
+  SkillsPage, 
+  UserDetailPage, 
+  ContractsPage,
+  ComplaintsPage
+} from './pages';
 import { useTranslation } from 'react-i18next';
 import { Layout, Menu, Icon, Button } from 'antd';
 import {LanguageToggle } from './components';
-// import logo from './assets/logo225.png';
 import { logout } from './reducers/auth.reducer';
 const { Header, 
-  // Footer, 
   Sider, Content } = Layout;
-// const { SubMenu } = Menu;
 
 
 const AppRouter = ({logout}) => {
@@ -85,10 +90,10 @@ const AppRouter = ({logout}) => {
                     <span>{t('contracts')}</span>
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="/chats">
-                  <Link to="/chats">
+                <Menu.Item key="/complaints">
+                  <Link to="/complaints">
                     <Icon type="mail" />
-                    <span>{t('chats')}</span>
+                    <span>{t('complaints')}</span>
                   </Link>
                 </Menu.Item>
               </Menu>
@@ -115,6 +120,9 @@ const AppRouter = ({logout}) => {
                 <Route path={'/contracts'}>
                   <ContractsPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
+                <Route path='/complaints'>
+                  <ComplaintsPage setshowLayout={setshowLayout} setTab={setTab}/>
+                </Route> 
                 <Route path='/'>
                   <DashboardPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
