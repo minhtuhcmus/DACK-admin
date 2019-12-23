@@ -3,19 +3,12 @@ import React, { useState, useEffect }  from 'react';
 import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-// import { compose } from 'redux';
-// import { LanguageToggle } from '../components';
-// import {userOnly} from '../hocs';
 import { withRouter, 
-  // Link, 
   useLocation, useHistory } from 'react-router-dom';
-import { Button, Icon, Table, 
-  // Tag,  
-  Col, Row, Modal, Descriptions,
-  // Popover, 
-  Input } from 'antd';
+import { Button, Table, 
+  Col, Row, Modal, Radio,
+} from 'antd';
 import { contractApi } from '../api';
-// import Slider from 'react-slick';
 const cookies = new Cookies();
 const ContractsPage = ({language, setshowLayout, setTab}) => {
   const [showModal, setShowModal] = useState(false);
@@ -32,10 +25,6 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
-
-  // useEffect(() => {
-  //   i18n.changeLanguage(language);
-  // }, [language]);
 
   const location = useLocation();
   const [contractList, setContractList] = useState(null);
@@ -68,118 +57,169 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
       <Row className='page-title'>
         <h1 className='page-title-text'>{t('contracts')}</h1>
       </Row>
-        <Modal 
-          title="Contract Info"
-          visible={showModal}
-          onOk={async () => {
-            await setShowModal(false);
-          }}
-          onCancel={async () => {
-            await setShowModal(false);
-          }}
-          width='50%'
-        >
+      <Modal 
+        title="Contract Info"
+        visible={showModal}
+        onOk={async () => {
+          await setShowModal(false);
+        }}
+        onCancel={async () => {
+          await setShowModal(false);
+        }}
+        width='50%'
+      >
         {
           contractDetail ?
-          <div>
-            <Row className='contract-row'>
-              <Col span={8}>
-              <span className='contract-item-title'>ID: </span>
-              {
-                contractDetail.contractID
-              }
-              </Col>
-              <Col span={8}>
-              <span className='contract-item-title'>Subject: </span>
-              {
-                contractDetail.subject
-              }
-              </Col>
-              <Col span={8}>
-              <span className='contract-item-title'>Creation Date: </span>
-              {
-                contractDetail.creationDate
-              }
-              </Col>
-            </Row>
-            <Row className='contract-row'>
-              <Col span={12}>
-              <span className='contract-item-title'>Teacher Email: </span>
-              {
-                contractDetail.teacherEmail
-              }
-              </Col>
-              <Col span={12}>
-              <span className='contract-item-title'>Student Email: </span>
-              {
-                contractDetail.studentEmail
-              }
-              </Col>
-            </Row>
-            <Row className='contract-row'>
-              <Col span={12}>
-              <span className='contract-item-title'>Start Date: </span>
-              {
-                contractDetail.startDate
-              }
-              </Col>
-              <Col span={12}>
-              <span className='contract-item-title'>End Date: </span>
-              {
-                contractDetail.endDate
-              }
-              </Col>
-            </Row>
-            <Row className='contract-row'>
-              <span className='contract-item-title'>Price: </span>
-              <Col span={6}>
-              {
-                contractDetail.signedPrice
-              }
-              </Col>
-              <Col span={2}>
+            <div>
+              <Row className='contract-row' style={{
+                borderRadius: '5px',
+                borderStyle: 'solid',
+                paddingTop: '12px'
+              }}>
+                <Col span={8}>
+                  <span className='contract-item-title'>Subject: </span>
+                  <h1 style={{fontSize: 'large'}}>
+                    {
+                      contractDetail.subject
+                    }
+                  </h1>
+                </Col>
+                <Col span={8}>
+                  <span className='contract-item-title'>ID: </span>
+                  <h1 style={{fontSize: 'xx-large'}}>
+                    {
+                      contractDetail.contractID
+                    }
+                  </h1>
+                </Col>
+                <Col span={8}>
+                  <span className='contract-item-title'>Creation Date: </span>
+                  <h1 style={{fontSize: 'large'}}>
+                    {
+                      contractDetail.creationDate
+                    }
+                  </h1>
+                </Col>
+              </Row>
+              <Row className='contract-row'>
+                <Col span={12}>
+                  <span className='contract-item-title'>Teacher Email: </span>
+                  <h1 style={{fontSize: 'x-large	'}}>
+                    {
+                      contractDetail.teacherEmail
+                    }
+                  </h1>
+                  
+                </Col>
+                <Col span={12}>
+                  <span className='contract-item-title'>Student Email: </span>
+                  <h1 style={{fontSize: 'x-large'}}>
+                    {
+                      contractDetail.studentEmail
+                    }
+                  </h1>
+                </Col>
+              </Row>
+              <Row className='contract-row'>
+                <Col span={12}>
+                  <span className='contract-item-title'>Start Date: </span>
+                  <h1 style={{fontSize: 'x-large'}}>
+                    {
+                      contractDetail.startDate
+                    }
+                  </h1>
+                </Col>
+                <Col span={12}>
+                  <span className='contract-item-title'>End Date: </span>
+                  <h1 style={{fontSize: 'x-large'}}>
+                    {
+                      contractDetail.endDate
+                    }
+                  </h1>
+                </Col>
+              </Row>
+              <Row className='contract-row price'>
+                <Col span={4}>
+                  <h2 className='contract-item-title'>Price: </h2>
+                </Col>
+                <Col span={4}>
+                  <span className='contract-item-title'>Per hour</span>
+                  <h1 style={{fontSize: 'large'}}>
+                    {
+                      contractDetail.signedPrice
+                    }
+                  </h1>
+                </Col>
+                <Col span={4}>
                 X
-              </Col>
-              <Col span={6}>
-              {
-                contractDetail.totalHour
-              }
-              </Col>
-              <Col span={2}>
+                </Col>
+                <Col span={4}>
+                  <span className='contract-item-title'>Hour(s)</span>
+                  <h1 style={{fontSize: 'large'}}>
+                    {
+                      contractDetail.totalHour
+                    }
+                  </h1>
+                </Col>
+                <Col span={2}>
                 =
-              </Col>
-              <Col span={8}>
-              {
-                contractDetail.totalPrice
-              }
-              </Col>
-            </Row>
-            <Row className='contract-row'>
-              <Col span={12}>
-              <span className='contract-item-title'>Review: </span>
-              {
-                contractDetail.review
-              }
-              </Col>
-              <Col span={12}>
-              <span className='contract-item-title'>Rating: </span>
-              {
-                contractDetail.rating
-              }
-              </Col>
-            </Row>
-          </div>
-          :
-          ''
+                </Col>
+                <Col span={6}>
+                  <h1 style={{fontSize: 'xx-large'}}>
+                    {
+                      contractDetail.totalPrice
+                    }
+                  </h1>
+                </Col>
+              </Row>
+              <Row className='contract-row'>
+                <Col span={12}>
+                  <span className='contract-item-title'>Review: </span>
+                  {
+                    contractDetail.review
+                  }
+                </Col>
+                <Col span={12}>
+                  <span className='contract-item-title'>Rating: </span>
+                  <h1 style={{fontSize: 'large'}}>
+                    {
+                      contractDetail.rating
+                    }
+                  </h1>
+                </Col>
+              </Row>
+              <Row className='contract-row' type="flex" justify="center">
+                <Col span={12}>
+                  <Radio.Group value={contractDetail.status} onChange={async (e) => {
+                    console.log('value', e.target.value);
+                    let res = await contractApi.changeStatus(contractDetail.contractID, e.target.value);
+                    if(res.returnCode === 1){
+                      let newContract = await contractApi.getContract(contractDetail.contractID);
+                      console.log('newContract', newContract);
+                      setContractDetail(newContract.data);
+                    }
+                    loadData();
+                  }}>
+                    <Radio.Button value={0}>{t('cancel')}</Radio.Button>
+                    <Radio.Button value={2} disabled>{t('waiting')}</Radio.Button>
+                    <Radio.Button value={3} disabled>{t('ongoing')}</Radio.Button>
+                    <Radio.Button value={1}>{t('done')}</Radio.Button>
+                  </Radio.Group>
+                </Col>
+              </Row>
+            </div>
+            :
+            ''
         }
-          </Modal>
+      </Modal>
       <Table 
         columns={
           [
             {
               title: t('contract_id'),
               dataIndex: 'contractID',
-              key: 'contractID'
+              key: 'contractID',
+              width: '100px'
             },
             {
               title: t('teacher_email'),

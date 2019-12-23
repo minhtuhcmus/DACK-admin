@@ -3,19 +3,12 @@ import React, { useState, useEffect }  from 'react';
 import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-// import { compose } from 'redux';
-// import { LanguageToggle } from '../components';
-// import {userOnly} from '../hocs';
 import { withRouter, 
-  // Link, 
   useLocation, useHistory } from 'react-router-dom';
 import { Button, Icon, Table, 
-  // Tag, 
   Row, Drawer, 
-  // Popover, 
   Input } from 'antd';
 import { skillApi } from '../api';
-// import Slider from 'react-slick';
 const cookies = new Cookies();
 const SkillsPage = ({language, setshowLayout, setTab}) => {
   const [showDrawer, setShowDrawer] = useState(false);

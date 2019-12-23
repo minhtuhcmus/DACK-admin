@@ -4,16 +4,12 @@ import React, { useState, useEffect }  from 'react';
 import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-// import { compose } from 'redux';
-// import { LanguageToggle } from '../components';
-// import {userOnly} from '../hocs';
 import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Icon, Table, Tag, Row, Tabs, Select, Form, Input, Modal, Drawer,
   Col, Descriptions,
   Popover } from 'antd';
 import { userApi } from '../api';
 import { addAdmin } from '../reducers/user.reducer';
-// import userDetailPage from './user-detail.page';
 const { Option } = Select;
 const { TabPane } = Tabs;
 const cookies = new Cookies();

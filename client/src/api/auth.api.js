@@ -1,4 +1,4 @@
-const API_URL = 'http://167.179.80.90:3002';
+import { API_URL } from '../constants';
 
 const login = async (email, password) => {
   const res = await fetch(`${API_URL}/login`, {

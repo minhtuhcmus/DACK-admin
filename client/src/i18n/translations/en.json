@@ -35,5 +35,9 @@
   "student": "STUDENT",
   "teachers": "Teachers",
   "teacher": "TEACHER",
-  "admin": "Admin"
+  "admin": "Admin",
+  "cancel": "CANCEL",
+  "done": "DONE",
+  "waiting": "WAITING",
+  "ongoing": "ONGOING" 
 }

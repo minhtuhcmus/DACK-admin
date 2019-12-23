@@ -5,3 +5,4 @@ import './userOnly.scss';
 import './SkillsPage.scss';
 import './UsersPage.scss';
 import './ContractPage.scss';
+import './CustomAnt.scss';

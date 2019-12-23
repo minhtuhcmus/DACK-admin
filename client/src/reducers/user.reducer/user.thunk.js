@@ -1,12 +1,9 @@
-// import { Cookies } from 'react-cookie';
 import { userApi } from '../../api';
 import {
   doaddAdmin,
   doaddAdminFail,
   doaddAdminSuccess
 } from './user.action';
-
-// const cookies = new Cookies();
 
 export const addAdmin = (data) => async dispatch => {
   dispatch(doaddAdmin(data));

@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
-// import { doLogin } from '../reducers/auth.reducer';
 import {connect} from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { withRouter, useLocation, useHistory } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd';
 import logo from '../assets/logo225.png';
 import { login } from '../reducers/auth.reducer';
-// import Password from 'antd/lib/input/Password';
 import { Cookies } from 'react-cookie';
 
 const NormalLoginForm = ({ form, login }) => {
@@ -97,7 +95,7 @@ const LoginPage = ({language, setshowLayout, login}) => {
           history.push('/')
           :
           <Row type='flex' justify='center' align='middle' className='login-container'>
-            <Col>
+            <Col span={6}>
               <img className='app-logo' alt='app-logo' src={logo}/>
               <WrappedNormalLoginForm login={login}/>
             </Col> 
