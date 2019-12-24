@@ -50,29 +50,21 @@ const NormalLoginForm = ({ form, login }) => {
         )}
       </Form.Item>
       <Form.Item>
-        {getFieldDecorator('remember', {
-          valuePropName: 'checked',
-          initialValue: true,
-        })(<Checkbox>{t('remember_me')}</Checkbox>)}
-        <a className="login-form-forgot" href="/">
-          {t('forgot_password')}
-        </a>
         <Button type="primary" htmlType="submit" className="login-form-button">
           {t('login')}
         </Button>
-        {t('or')} <a href="/">{t('register_now')}</a>
       </Form.Item>
     </Form>
   );
 };
 
-const LoginPage = ({language, setshowLayout, login}) => {
+const LoginPage = ({language, setshowLayout, login, errorMessage}) => {
   const {i18n} = useTranslation();
   const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
   const location = useLocation();
-  const cookies = new Cookies(); 
+  const cookies = new Cookies();
   const history = useHistory();
- 
+
   useEffect(() => {
     async function checkLocation() {
       if(location.pathname === '/login'){
@@ -97,18 +89,20 @@ const LoginPage = ({language, setshowLayout, login}) => {
           <Row type='flex' justify='center' align='middle' className='login-container'>
             <Col span={6}>
               <img className='app-logo' alt='app-logo' src={logo}/>
+              <p style={{color: 'red'}}>{errorMessage}</p>
               <WrappedNormalLoginForm login={login}/>
-            </Col> 
+            </Col>
           </Row>
       }
     </>
-    
+
   );
 };
 
 const mapStateToProps = (state) => ({
-  language: state.appReducer.language
-}); 
+  language: state.appReducer.language,
+  errorMessage: state.authReducer.error
+});
 
 const mapDispatchToProps = (dispatch) => ({
   login: (email, password) => dispatch(login(email, password))

@@ -3,9 +3,9 @@ import React, { useState, useEffect }  from 'react';
 import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { withRouter, 
+import { withRouter,
   useLocation, useHistory } from 'react-router-dom';
-import { Button, Table, 
+import { Button, Table,
   Col, Row, Modal, Radio,
 } from 'antd';
 import { contractApi } from '../api';
@@ -18,7 +18,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
   const currUser = cookies.get('CURR_USER');
   useEffect(() => {
     if(!currUser){
-      history.push('/login');      
+      history.push('/login');
     }
   });
 
@@ -53,12 +53,12 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
 
   return (
     <div>
-      
+
       <Row className='page-title'>
         <h1 className='page-title-text'>{t('contracts')}</h1>
       </Row>
-      <Modal 
-        title="Contract Info"
+      <Modal
+        title={t('contractInfo')}
         visible={showModal}
         onOk={async () => {
           await setShowModal(false);
@@ -77,7 +77,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                 paddingTop: '12px'
               }}>
                 <Col span={8}>
-                  <span className='contract-item-title'>Subject: </span>
+                  <span className='contract-item-title'>{t('subject')}: </span>
                   <h1 style={{fontSize: 'large'}}>
                     {
                       contractDetail.subject
@@ -85,7 +85,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                   </h1>
                 </Col>
                 <Col span={8}>
-                  <span className='contract-item-title'>ID: </span>
+                  <span className='contract-item-title'>{t('contract_id')}: </span>
                   <h1 style={{fontSize: 'xx-large'}}>
                     {
                       contractDetail.contractID
@@ -93,7 +93,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                   </h1>
                 </Col>
                 <Col span={8}>
-                  <span className='contract-item-title'>Creation Date: </span>
+                  <span className='contract-item-title'>{t('creation_date')}: </span>
                   <h1 style={{fontSize: 'large'}}>
                     {
                       contractDetail.creationDate
@@ -103,16 +103,16 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
               </Row>
               <Row className='contract-row'>
                 <Col span={12}>
-                  <span className='contract-item-title'>Teacher Email: </span>
+                  <span className='contract-item-title'>{t('teacher_email')}: </span>
                   <h1 style={{fontSize: 'x-large	'}}>
                     {
                       contractDetail.teacherEmail
                     }
                   </h1>
-                  
+
                 </Col>
                 <Col span={12}>
-                  <span className='contract-item-title'>Student Email: </span>
+                  <span className='contract-item-title'>{t('student_email')}: </span>
                   <h1 style={{fontSize: 'x-large'}}>
                     {
                       contractDetail.studentEmail
@@ -122,7 +122,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
               </Row>
               <Row className='contract-row'>
                 <Col span={12}>
-                  <span className='contract-item-title'>Start Date: </span>
+                  <span className='contract-item-title'>{t('start_date')}: </span>
                   <h1 style={{fontSize: 'x-large'}}>
                     {
                       contractDetail.startDate
@@ -130,7 +130,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                   </h1>
                 </Col>
                 <Col span={12}>
-                  <span className='contract-item-title'>End Date: </span>
+                  <span className='contract-item-title'>{t('end_date')}: </span>
                   <h1 style={{fontSize: 'x-large'}}>
                     {
                       contractDetail.endDate
@@ -140,10 +140,10 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
               </Row>
               <Row className='contract-row price'>
                 <Col span={4}>
-                  <h2 className='contract-item-title'>Price: </h2>
+                  <h2 className='contract-item-title'>{t('Price')}: </h2>
                 </Col>
                 <Col span={4}>
-                  <span className='contract-item-title'>Per hour</span>
+                  <span className='contract-item-title'>{t('PerHour')}</span>
                   <h1 style={{fontSize: 'large'}}>
                     {
                       contractDetail.signedPrice
@@ -154,7 +154,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                 X
                 </Col>
                 <Col span={4}>
-                  <span className='contract-item-title'>Hour(s)</span>
+                  <span className='contract-item-title'>{t('Hour')}</span>
                   <h1 style={{fontSize: 'large'}}>
                     {
                       contractDetail.totalHour
@@ -174,13 +174,13 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
               </Row>
               <Row className='contract-row'>
                 <Col span={12}>
-                  <span className='contract-item-title'>Review: </span>
+                  <span className='contract-item-title'>{t('Review')}: </span>
                   {
                     contractDetail.review
                   }
                 </Col>
                 <Col span={12}>
-                  <span className='contract-item-title'>Rating: </span>
+                  <span className='contract-item-title'>{t('Rating')}: </span>
                   <h1 style={{fontSize: 'large'}}>
                     {
                       contractDetail.rating
@@ -189,7 +189,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                 </Col>
               </Row>
               <Row className='contract-row' type="flex" justify="center">
-                <Col span={12}>
+                <Col span={16} offset={2}>
                   <Radio.Group value={contractDetail.status} onChange={async (e) => {
                     console.log('value', e.target.value);
                     let res = await contractApi.changeStatus(contractDetail.contractID, e.target.value);
@@ -200,10 +200,17 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                     }
                     loadData();
                   }}>
-                    <Radio.Button value={0}>{t('cancel')}</Radio.Button>
+                    {(contractDetail.status === 0 || contractDetail.status === 1) ?
+                        <Radio.Button value={0} disabled>{t('cancel')}</Radio.Button> :
+                        <Radio.Button value={0}>{t('cancel')}</Radio.Button>
+                    }
+
                     <Radio.Button value={2} disabled>{t('waiting')}</Radio.Button>
                     <Radio.Button value={3} disabled>{t('ongoing')}</Radio.Button>
-                    <Radio.Button value={1}>{t('done')}</Radio.Button>
+                    {(contractDetail.status === 0 || contractDetail.status === 1) ?
+                        <Radio.Button value={0} disabled>{t('done')}</Radio.Button> :
+                        <Radio.Button value={0}>{t('done')}</Radio.Button>
+                    }
                   </Radio.Group>
                 </Col>
               </Row>
@@ -212,7 +219,7 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
             ''
         }
       </Modal>
-      <Table 
+      <Table
         columns={
           [
             {
@@ -252,9 +259,19 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
               key: 'endDate'
             },
             {
+              title: t('status'),
+              key: 'status',
+              render: record => {
+                return (record.status === 1 ? <h4 style={{color: 'green'}}>{t('done')}</h4>:
+                    (record.status === 0) ? <h4 style={{color: 'red'}}>{t('cancel')}</h4> :
+                        (record.status === 3) ? <h4 style={{color: 'blue'}}>{t('ongoing')}</h4> :
+                            <h4  style={{color: 'black'}}>{t('waiting')}</h4>)
+              }
+            },
+            {
               title: t('action'),
               key: 'action',
-              render: record => 
+              render: record =>
                 <Button icon='eye' type='primary' onClick={ async () => {
                   await setContractDetail(record);
                   await setShowModal(true);
@@ -262,7 +279,6 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
             }
           ]
         }
-
         dataSource={contractList ? contractList: null}
         scroll={{ y: 350}}
       />
@@ -271,8 +287,8 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
 };
 
 const mapStateToProps = (state) => ({
-  language: state.appReducer.language  
-}); 
+  language: state.appReducer.language
+});
 
 const mapDispatchToProps = () => ({
 

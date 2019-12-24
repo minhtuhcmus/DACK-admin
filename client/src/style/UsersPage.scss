@@ -1,10 +1,15 @@
 .lock{
-  background-color: gray !important;
+  background-color: red !important;
   color: white !important;
 }
 
 .unlock{
   color: #155724 !important;
-    background-color: #d4edda !important;
-    border-color: #c3e6cb !important;
+  background-color: #d4edda !important;
+  border-color: #c3e6cb !important;
+}
+
+.waiting-for-verification{
+    background-color: yellow !important;
+    color: black !important;
 }

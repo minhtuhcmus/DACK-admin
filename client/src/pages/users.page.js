@@ -101,7 +101,7 @@ const CreateUserForm = ({form, createUser, isAddingUser}) => {
             },
           ],
         })(<Input />)}
-      </Form.Item>     
+      </Form.Item>
       <Form.Item label={t('password')} hasFeedback>
         {getFieldDecorator('password', {
           rules: [
@@ -155,6 +155,8 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
   // const {url} = useRouteMatch();
   const [showDrawer, setShowDrawer] = useState(false);
   const [userDetail, setUserDetail] = useState(null);
+
+  const [showButtonAdd, setShowButtonAdd] = useState(false);
   useEffect(() => {
     if(!currUser){
       history.push('/login');
@@ -205,6 +207,11 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
 
   const callback = (key) => {
     console.log(key);
+    if (key === 'admins'){
+      setShowButtonAdd(true);
+    } else {
+      setShowButtonAdd(false);
+    }
   };
 
   const WrappedCreateUserForm = Form.create()(CreateUserForm);
@@ -214,6 +221,7 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
       <Row className='page-title'>
         <h1 className='page-title-text'>{t('all_accounts')}</h1>
         <Link>
+          {showButtonAdd ?
           <Button className='float-right-btn' type='primary' onClick={async () => {
             await setShowModal(true);
           }}>
@@ -221,9 +229,9 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
             {
               t('add_admin')
             }
-          </Button>
+          </Button> : null}
         </Link>
-        <Modal 
+        <Modal
           title="Add Admin"
           visible={showModal}
           onOk={async () => {
@@ -279,22 +287,23 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
                   key: 'status',
                   render: (status, record) => (
                     <div>
-                      {
-                        
+                      {status !== 2 ?
                         <Link className='action-btn'>
                           <Popover content={(
                             <span>{status === 1 ? t('lock') : t('unlock')}</span>
                           )}>
-                            <Button className={!(status === 1) ? 'lock' : 'unlock'} onClick={async() => {
+                            <Button className={(status === 1) ? 'unlock' : (status === 0 ) ? 'lock' : 'waiting-for-verification'} onClick={async() => {
                               record.status = status === 1 ? 0 : 1;
                               await userApi.changeUser(record.email, record);
                               loadData();
                             }}>
-                              {!(status === 1) ? t('block') : t('active')}
+                              {(status === 1) ? t('active'): (status === 0) ? t('block') : t('waiting_for_verification')}
                             </Button>
                           </Popover>
-                        </Link>
-                          
+                        </Link> :
+                          <Button className="waiting-for-verification" disabled>
+                            {t('waiting_for_verification')}
+                          </Button>
                       }
                     </div>
                   )
@@ -372,20 +381,23 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
                   key: 'status',
                   render: (status, record) => (
                     <div>
-                      {
+                      { status !== 2 ?
                         <Link className='action-btn'>
                           <Popover content={(
                             <span>{status === 1 ? t('lock') : t('unlock')}</span>
                           )}>
-                            <Button className={!(status === 1) ? 'lock' : 'unlock'} onClick={async() => {
-                              record.status = status === 1 ? 0 : 1;
+                            <Button className={(status === 1) ? 'unlock' : (status === 0 ) ? 'lock' : 'waiting-for-verification'} onClick={async() => {
+                              record.status = (status === 1 || status === 2) ? 0 : 1;
                               await userApi.changeUser(record.email, record);
                               loadData();
                             }}>
-                              {!(status === 1) ? t('block') : t('active')}
+                              {(status === 1) ? t('active'): (status === 0) ? t('block') : t('waiting_for_verification')}
                             </Button>
                           </Popover>
-                        </Link>
+                        </Link> :
+                          <Button className="waiting-for-verification" disabled>
+                            {t('waiting_for_verification')}
+                          </Button>
                       }
                     </div>
                   )
@@ -421,6 +433,7 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
             scroll={{ y: 300}}
           />
         </TabPane>
+        {currUser.role === 0 ?
         <TabPane tab={t('admin')} key="admins">
           <Table
             columns={
@@ -511,15 +524,15 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
                 role: user.role,
                 status: user.status,
                 key: index
-              })): 
+              })):
                 null
             }
             scroll={{ y: 300}}
           />
-        </TabPane>
+        </TabPane> : null}
       </Tabs>
       <Drawer
-        title={t('user_detail')}
+        title={t('User Detail')}
         placement="right"
         closable={true}
         onClose={async () => {
@@ -531,43 +544,43 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
         <Row type='flex' justify='center' align='middle' className='login-container'>
           <Col span={12} className='create-user-form-container'>
             {
-              userDetail ? 
+              userDetail ?
                 <>
                   {
                     <Descriptions column={1}>
-                      <Descriptions.Item label="UserName">
+                      <Descriptions.Item label={t('full_name')}>
                         {userDetail.fullName}
                       </Descriptions.Item>
-                      <Descriptions.Item label="Telephone">
+                      <Descriptions.Item label={t('phone_number')}>
                         {userDetail.phoneNumber}
                       </Descriptions.Item>
-                      <Descriptions.Item label="Email">
+                      <Descriptions.Item label={t('email')}>
                         {userDetail.email}
                       </Descriptions.Item>
                       {
                         userDetail.role ?
-                          <Descriptions.Item label="Role">
+                          <Descriptions.Item label={t('role')}>
                             {userDetail.role === 0 ? 'SUPERADMIN' : 'ADMIN'}
                           </Descriptions.Item>
                           :
-                          <Descriptions.Item label="Address">
+                          <Descriptions.Item label={t('address')}>
                             {userDetail.address}
                           </Descriptions.Item>
                       }
                       {
                         userDetail.type ?
-                          <Descriptions.Item label="Role">
+                          <Descriptions.Item label={t('role')}>
                             {userDetail.type === 1 ? t('teacher') : t('student')}
                           </Descriptions.Item>:
                           ''
                       }
                     </Descriptions>
                   }
-                </>  
+                </>
                 :
                 ''
             }
-          </Col> 
+          </Col>
         </Row>
       </Drawer>
     </div>

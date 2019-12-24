@@ -5,7 +5,7 @@ import {
   doLogin,
   doLoginFail,
   doLoginSuccess,
-  doLogout 
+  doLogout
 } from './auth.action';
 
 const cookies = new Cookies();
@@ -21,13 +21,13 @@ export const login = (email, password) => async dispatch => {
     return true;
   }
   else{
-    dispatch(doLoginFail(res.message));
+    dispatch(doLoginFail(res.returnMessage));
     return false;
   }
 };
 
 export const logout = () => async dispatch => {
-  
+
   dispatch(doLogout());
   cookies.set('CURR_USER', '');
 };

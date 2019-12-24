@@ -64,6 +64,7 @@ exports.updateContract = async function (req, res, next) {
             redis.del(`CONTRACT_${contractID}`);
             redis.del(`CONTRACT_BY_TEACHER_${contract.teacherEmail}`);
             redis.del(`CONTRACT_BY_STUDENT_${contract.studentEmail}`);
+            redis.del(`INCOME_${contract.teacherEmail}`);
 
             return res.json({
                 returnCode: 1,

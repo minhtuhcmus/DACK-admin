@@ -5,9 +5,9 @@ import authAction from './auth.action';
 const INITIAL_STATE = {
   isAuthenticated: false,
   isLogining  : false,
-  user: undefined,
-  token: undefined,
-  error: true
+  user: {},
+  token: '',
+  error: ''
 };
 
 const applyLogout = (state, action) => ({
@@ -17,14 +17,15 @@ const applyLogout = (state, action) => ({
 
 const applyClearResult = (state, action) => ({
   ...state,
-  result: undefined
+  error: ''
 });
 
 const applyLogin = (state, action) => ({
   ...state,
   isLogining: true,
-  user: undefined,
-  token: undefined
+  user: {},
+  token: '',
+  error: ''
 });
 
 const applyLoginSuccess = (state, action) => ({
@@ -37,7 +38,7 @@ const applyLoginSuccess = (state, action) => ({
 const applyLoginFail = (state, action) => ({
   ...state,
   isLogining: false,
-  error: true
+  error: action.payload.message
 });
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -61,7 +62,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case authAction.LOGOUT: {
       return applyLogout(state, action);
     }
-   
+
     default: return state;
   }
 };
