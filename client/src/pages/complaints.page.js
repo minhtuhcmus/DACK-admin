@@ -1,10 +1,10 @@
 /* eslint-disable react/display-name, react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { 
-  withRouter, 
-  useLocation, 
-  useHistory 
+import {
+  withRouter,
+  useLocation,
+  useHistory
 } from 'react-router-dom';
 import {Cookies} from 'react-cookie';
 import { complaintApi, contractApi } from '../api';
@@ -23,10 +23,11 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
   const [showModal, setShowModal] = useState(false);
   const [contractDetail, setContractDetail] = useState(null);
   const [chatLog, setChatLog] = useState(null);
+  const [complaintID, setComplaintID] = useState(0);
 
   useEffect(() => {
     if(!currUser){
-      history.push('/login');      
+      history.push('/login');
     }
   });
 
@@ -60,29 +61,30 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
     <div>
       <Row>
         {
-          complaintList ? 
-            complaintList.map((complaint, index) => 
-              <Col 
-                xs={{span: 24}} 
-                sm={{span: 24}} 
-                md={{span: 12}} 
-                lg={{span: 12}} 
+          complaintList ?
+            complaintList.map((complaint, index) =>
+              <Col
+                xs={{span: 24}}
+                sm={{span: 24}}
+                md={{span: 12}}
+                lg={{span: 12}}
                 xl={{span: 8}}
-                key={index} 
+                key={index}
               >
-                <Card 
-                  title={`${t('complaint')} #${complaint.complaintID}`} 
+                <Card
+                  title={`${t('complaint')} #${complaint.complaintID}`}
                   onClick={async () => {
+                    await setComplaintID(complaint.complaintID);
                     let resContract = await contractApi.getContract(complaint.contractID);
                     let resChat = await complaintApi.getChats(complaint.contractID);
                     await setContractDetail(resContract.data);
                     await setChatLog(resChat.data);
                     await setShowModal(true);
                   }}
-                  style={{ 
-                    margin: '12px' 
+                  style={{
+                    margin: '12px'
                   }}
-                  
+
                 >
                   <span>{complaint.content}</span>
                 </Card>
@@ -93,8 +95,8 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
         }
       </Row>
 
-      <Modal 
-        title="Complaint Info"
+      <Modal
+        title={t('complaintInfo')}
         visible={showModal}
         onOk={async () => {
           await setShowModal(false);
@@ -105,7 +107,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
         width='50%'
       >
         <Tabs defaultActiveKey="1">
-          <TabPane tab="Contract Detail" key="1">
+          <TabPane tab={t('contractInfo')} key="1">
             {
               contractDetail ?
                 <div>
@@ -115,7 +117,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                     paddingTop: '12px'
                   }}>
                     <Col span={8}>
-                      <span className='contract-item-title'>Subject: </span>
+                      <span className='contract-item-title'>{t('subject')}: </span>
                       <h1 style={{fontSize: 'large'}}>
                         {
                           contractDetail.subject
@@ -123,7 +125,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                       </h1>
                     </Col>
                     <Col span={8}>
-                      <span className='contract-item-title'>ID: </span>
+                      <span className='contract-item-title'>{t('contract_id')}: </span>
                       <h1 style={{fontSize: 'xx-large'}}>
                         {
                           contractDetail.contractID
@@ -131,7 +133,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                       </h1>
                     </Col>
                     <Col span={8}>
-                      <span className='contract-item-title'>Creation Date: </span>
+                      <span className='contract-item-title'>{t('creation_date')}: </span>
                       <h1 style={{fontSize: 'large'}}>
                         {
                           contractDetail.creationDate
@@ -141,16 +143,16 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                   </Row>
                   <Row className='contract-row'>
                     <Col span={12}>
-                      <span className='contract-item-title'>Teacher Email: </span>
+                      <span className='contract-item-title'>{t('teacher_email')}: </span>
                       <h1 style={{fontSize: 'x-large	'}}>
                         {
                           contractDetail.teacherEmail
                         }
                       </h1>
-                  
+
                     </Col>
                     <Col span={12}>
-                      <span className='contract-item-title'>Student Email: </span>
+                      <span className='contract-item-title'>{t('student_email')}: </span>
                       <h1 style={{fontSize: 'x-large'}}>
                         {
                           contractDetail.studentEmail
@@ -160,7 +162,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                   </Row>
                   <Row className='contract-row'>
                     <Col span={12}>
-                      <span className='contract-item-title'>Start Date: </span>
+                      <span className='contract-item-title'>{t('start_date')}: </span>
                       <h1 style={{fontSize: 'x-large'}}>
                         {
                           contractDetail.startDate
@@ -168,7 +170,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                       </h1>
                     </Col>
                     <Col span={12}>
-                      <span className='contract-item-title'>End Date: </span>
+                      <span className='contract-item-title'>{t('end_date')}: </span>
                       <h1 style={{fontSize: 'x-large'}}>
                         {
                           contractDetail.endDate
@@ -178,10 +180,10 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                   </Row>
                   <Row className='contract-row price'>
                     <Col span={4}>
-                      <h2 className='contract-item-title'>Price: </h2>
+                      <h2 className='contract-item-title'>{t('Price')}: </h2>
                     </Col>
                     <Col span={4}>
-                      <span className='contract-item-title'>Per hour</span>
+                      <span className='contract-item-title'>{t('PerHour')}</span>
                       <h1 style={{fontSize: 'large'}}>
                         {
                           contractDetail.signedPrice
@@ -192,7 +194,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                 X
                     </Col>
                     <Col span={4}>
-                      <span className='contract-item-title'>Hour(s)</span>
+                      <span className='contract-item-title'>{t('Hour')}</span>
                       <h1 style={{fontSize: 'large'}}>
                         {
                           contractDetail.totalHour
@@ -212,13 +214,13 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                   </Row>
                   <Row className='contract-row'>
                     <Col span={12}>
-                      <span className='contract-item-title'>Review: </span>
+                      <span className='contract-item-title'>{t('Review')}: </span>
                       {
                         contractDetail.review
                       }
                     </Col>
                     <Col span={12}>
-                      <span className='contract-item-title'>Rating: </span>
+                      <span className='contract-item-title'>{t('Rating')}: </span>
                       <h1 style={{fontSize: 'large'}}>
                         {
                           contractDetail.rating
@@ -227,10 +229,9 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                     </Col>
                   </Row>
                   <Row className='contract-row' type="flex" justify="center">
-                    <Col span={12}>
+                    <Col span={16} offset={2}>
                       <Radio.Group value={contractDetail.status} onChange={async (e) => {
-                        console.log('value', e.target.value);
-                        let res = await contractApi.changeStatus(contractDetail.contractID, e.target.value);
+                        let res = await complaintApi.changeStatus(complaintID, e.target.value);
                         if(res.returnCode === 1){
                           let newContract = await contractApi.getContract(contractDetail.contractID);
                           console.log('newContract', newContract);
@@ -250,7 +251,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                 ''
             }
           </TabPane>
-          <TabPane tab="Chat log" key="2">
+          <TabPane tab={t('chatLog')} key="2">
             {
               chatLog ? 
                 chatLog.map((chat, index) =>
@@ -287,7 +288,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
             }
           </TabPane>
         </Tabs>
-        
+
       </Modal>
     </div>
   );
@@ -295,8 +296,8 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
 };
 
 const mapStateToProps = (state) => ({
-  language: state.appReducer.language  
-}); 
+  language: state.appReducer.language
+});
 
 const mapDispatchToProps = () => ({
 

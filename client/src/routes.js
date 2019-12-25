@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState, 
-} from 'react'; 
+import React, { useState,
+} from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { 
-  DashboardPage, 
-  LoginPage, 
-  CreateUserPage, 
-  UsersPage, 
-  SkillsPage, 
-  UserDetailPage, 
+import {
+  DashboardPage,
+  LoginPage,
+  CreateUserPage,
+  UsersPage,
+  SkillsPage,
+  UserDetailPage,
   ContractsPage,
   ComplaintsPage
 } from './pages';
@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { Layout, Menu, Icon, Button } from 'antd';
 import {LanguageToggle } from './components';
 import { logout } from './reducers/auth.reducer';
-const { Header, 
+const { Header,
   Sider, Content } = Layout;
 
 
@@ -38,9 +38,9 @@ const AppRouter = ({logout}) => {
           <Button className='menu-button' type='link' onClick={toggleCollapsed}>
             <Icon type={collapsed ? 'menu' : 'close'} style={{fontSize:'32px', margin:'4px', }}/>
           </Button>
-          
+
           <span className='app-name'>{t('app_name')}</span>
-          
+
           <div className='header-right'>
             <div className='language-toggle'>
               <LanguageToggle/>
@@ -53,7 +53,7 @@ const AppRouter = ({logout}) => {
                 }}>{t('logout')}</Button>
               </Link>
             </div>
-        
+
           </div>
 
         </Header>
@@ -93,13 +93,13 @@ const AppRouter = ({logout}) => {
                 <Menu.Item key="/complaints">
                   <Link to="/complaints">
                     <Icon type="mail" />
-                    <span>{t('complaints')}</span>
+                    <span>{t('complaint')}</span>
                   </Link>
                 </Menu.Item>
               </Menu>
             </div>
           </Sider>
-          <Content>
+          <Content style={{overflowY: 'hidden'}}>
             <div className={showLayout ? 'content-wrapper': ''}>
               <Switch>
                 <Route path="/login" >
@@ -109,10 +109,10 @@ const AppRouter = ({logout}) => {
                   <CreateUserPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
                 <Route exact path='/users'>
-                  <UsersPage setshowLayout={setshowLayout} setTab={setTab}/>  
+                  <UsersPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
                 <Route path='/skills'>
-                  <SkillsPage setshowLayout={setshowLayout} setTab={setTab}/>  
+                  <SkillsPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
                 <Route path={'/users/:email'}>
                   <UserDetailPage setshowLayout={setshowLayout} setTab={setTab}/>
@@ -122,7 +122,7 @@ const AppRouter = ({logout}) => {
                 </Route>
                 <Route path='/complaints'>
                   <ComplaintsPage setshowLayout={setshowLayout} setTab={setTab}/>
-                </Route> 
+                </Route>
                 <Route path='/'>
                   <DashboardPage setshowLayout={setshowLayout} setTab={setTab}/>
                 </Route>
@@ -131,12 +131,12 @@ const AppRouter = ({logout}) => {
           </Content>
         </Layout>
       </Layout>
-    </Router>    
+    </Router>
   );
 };
 
 const mapStateToProps = () => ({
-}); 
+});
 
 const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logout())

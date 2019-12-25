@@ -1,5 +1,5 @@
 {
-  "app_name": "MEET UP",
+  "app_name": "Uber For Tutor",
   "greeting":"HELLO USER!!!",
   "email": "E-mail",
   "require_username": "Please input your username!",
@@ -17,6 +17,7 @@
   "full_name": "Fullname",
   "phone_number": "Phone Number",
   "role": "Role",
+  "address": "Address",
   "confirm":"Confirm Password",
   "action":"Action",
   "detail": "Detail",
@@ -29,6 +30,7 @@
   "status": "Status",
   "active": "Active",
   "block": "Blocked",
+  "waiting_for_verification": "Waiting For Email Verification",
   "all_accounts": "All Accounts",
   "add_admin": "Add Admin",
   "students": "Students",
@@ -39,5 +41,27 @@
   "cancel": "CANCEL",
   "done": "DONE",
   "waiting": "WAITING",
-  "ongoing": "ONGOING" 
+  "ongoing": "ONGOING",
+
+  "contracts": "Contract",
+  "subject": "Subject",
+  "creation_date": "Creation Date",
+  "teacher_email": "Teacher Email",
+  "student_email": "Student Email",
+  "start_date": "Start Date",
+  "end_date": "End Date",
+  "Price": "Price",
+  "PerHour": "Per Hour",
+  "Hour": "Hour(s)",
+  "Review": "Review",
+  "Rating": "Rating",
+  "contract_id": "Contract ID",
+  "contractInfo" : "Contract Info",
+
+  "complaint": "Complaint",
+  "complaintInfo": "Complaint Info",
+  "chatLog": "Chat Log",
+
+  "User Detail": "User Detail"
+
 }
