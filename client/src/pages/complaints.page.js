@@ -23,6 +23,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
   const [showModal, setShowModal] = useState(false);
   const [contractDetail, setContractDetail] = useState(null);
   const [chatLog, setChatLog] = useState(null);
+  const [complaintID, setComplaintID] = useState(0);
 
   useEffect(() => {
     if(!currUser){
@@ -73,6 +74,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                 <Card
                   title={`${t('complaint')} #${complaint.complaintID}`}
                   onClick={async () => {
+                    await setComplaintID(complaint.complaintID);
                     let resContract = await contractApi.getContract(complaint.contractID);
                     let resChat = await complaintApi.getChats(complaint.contractID);
                     await setContractDetail(resContract.data);
@@ -229,7 +231,7 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                   <Row className='contract-row' type="flex" justify="center">
                     <Col span={16} offset={2}>
                       <Radio.Group value={contractDetail.status} onChange={async (e) => {
-                        let res = await complaintApi.changeStatus(contractDetail.contractID, e.target.value);
+                        let res = await complaintApi.changeStatus(complaintID, e.target.value);
                         if(res.returnCode === 1){
                           let newContract = await contractApi.getContract(contractDetail.contractID);
                           console.log('newContract', newContract);
