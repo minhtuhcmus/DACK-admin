@@ -253,36 +253,37 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
           <TabPane tab="Chat log" key="2">
             {
               chatLog ? 
-              chatLog.map(chat =>
+                chatLog.map((chat, index) =>
                 
                   <Row 
-                  type='flex' 
-                  justify={chat.sender === 1 ? 'end' : 'start'} 
-                  style={{
-                    marginBottom: '5px'
-                  }}
-                >
-                <Tooltip title={chat.timestamp} placement={chat.sender === 1 ? 'left' : 'right'}>
-
-                  <Col span={12} 
+                    type='flex' 
+                    justify={chat.sender === 1 ? 'end' : 'start'} 
                     style={{
-                      backgroundColor: chat.sender === 1 ? '#09f' : '#f1f0f0',
-                      color: chat.sender === 1 ? 'white' : 'black',
-                      borderRadius: '10px'
-                    }}>
-                    {
-                      chat.message
-                    }
-                  </Col>
-                  </Tooltip>
+                      marginBottom: '5px'
+                    }}
+                    key={index}
+                  >
+                    <Tooltip title={chat.timestamp} placement={chat.sender === 1 ? 'left' : 'right'}>
 
-                </Row>
+                      <Col span={12} 
+                        style={{
+                          backgroundColor: chat.sender === 1 ? '#09f' : '#f1f0f0',
+                          color: chat.sender === 1 ? 'white' : 'black',
+                          borderRadius: '10px'
+                        }}>
+                        {
+                          chat.message
+                        }
+                      </Col>
+                    </Tooltip>
+
+                  </Row>
 
                  
                 
-              )
-              :
-              null
+                )
+                :
+                null
             }
           </TabPane>
         </Tabs>
