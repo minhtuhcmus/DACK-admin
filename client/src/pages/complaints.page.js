@@ -253,17 +253,20 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
           </TabPane>
           <TabPane tab={t('chatLog')} key="2">
             {
-              chatLog ?
-                chatLog.map(chat =>
-                  <Row key={chat.messageID}
-                    type='flex'
-                    justify={chat.sender === 1 ? 'end' : 'start'}
+              chatLog ? 
+                chatLog.map((chat, index) =>
+                
+                  <Row 
+                    type='flex' 
+                    justify={chat.sender === 1 ? 'end' : 'start'} 
                     style={{
                       marginBottom: '5px'
                     }}
+                    key={index}
                   >
                     <Tooltip title={chat.timestamp} placement={chat.sender === 1 ? 'left' : 'right'}>
-                      <Col span={12}
+
+                      <Col span={12} 
                         style={{
                           backgroundColor: chat.sender === 1 ? '#09f' : '#f1f0f0',
                           color: chat.sender === 1 ? 'white' : 'black',
@@ -276,6 +279,9 @@ const ComplaintsPage = ({language, setshowLayout, setTab}) => {
                     </Tooltip>
 
                   </Row>
+
+                 
+                
                 )
                 :
                 null
