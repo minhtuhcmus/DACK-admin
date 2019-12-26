@@ -6,13 +6,12 @@ import React, {
 import {Cookies} from 'react-cookie';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { withRouter, Link, useLocation, useHistory } from 'react-router-dom';
-import { Button,
-} from 'antd';
+import { withRouter, useLocation, useHistory } from 'react-router-dom';
+
 const cookies = new Cookies();
 const DashboardPage = ({language, setshowLayout, setTab}) => {
 
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
   const history = useHistory();
   const currUser = cookies.get('CURR_USER');
   useEffect(() => {
@@ -46,11 +45,11 @@ const DashboardPage = ({language, setshowLayout, setTab}) => {
   });
 
   return (
-      <iframe
-          src="http://167.179.80.90:5000/public/dashboard/673e7457-e1a1-422c-9adc-dc0b5c80fc18#refresh=60"
-          width="100%"
-          height="550"
-      />
+    <iframe
+      src="http://167.179.80.90:5000/public/dashboard/673e7457-e1a1-422c-9adc-dc0b5c80fc18#refresh=60"
+      width="100%"
+      height="550"
+    />
 
 
   );

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import {connect} from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { withRouter, useLocation, useHistory } from 'react-router-dom';
-import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd';
+import { Form, Icon, Input, Button, Row, Col } from 'antd';
 import logo from '../assets/logo225.png';
 import { login } from '../reducers/auth.reducer';
 import { Cookies } from 'react-cookie';

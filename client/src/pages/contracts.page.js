@@ -201,15 +201,15 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
                     loadData();
                   }}>
                     {(contractDetail.status === 0 || contractDetail.status === 1) ?
-                        <Radio.Button value={0} disabled>{t('cancel')}</Radio.Button> :
-                        <Radio.Button value={0}>{t('cancel')}</Radio.Button>
+                      <Radio.Button value={0} disabled>{t('cancel')}</Radio.Button> :
+                      <Radio.Button value={0}>{t('cancel')}</Radio.Button>
                     }
 
                     <Radio.Button value={2} disabled>{t('waiting')}</Radio.Button>
                     <Radio.Button value={3} disabled>{t('ongoing')}</Radio.Button>
                     {(contractDetail.status === 0 || contractDetail.status === 1) ?
-                        <Radio.Button value={0} disabled>{t('done')}</Radio.Button> :
-                        <Radio.Button value={0}>{t('done')}</Radio.Button>
+                      <Radio.Button value={0} disabled>{t('done')}</Radio.Button> :
+                      <Radio.Button value={0}>{t('done')}</Radio.Button>
                     }
                   </Radio.Group>
                 </Col>
@@ -263,9 +263,9 @@ const ContractsPage = ({language, setshowLayout, setTab}) => {
               key: 'status',
               render: record => {
                 return (record.status === 1 ? <h4 style={{color: 'green'}}>{t('done')}</h4>:
-                    (record.status === 0) ? <h4 style={{color: 'red'}}>{t('cancel')}</h4> :
-                        (record.status === 3) ? <h4 style={{color: 'blue'}}>{t('ongoing')}</h4> :
-                            <h4  style={{color: 'black'}}>{t('waiting')}</h4>)
+                  (record.status === 0) ? <h4 style={{color: 'red'}}>{t('cancel')}</h4> :
+                    (record.status === 3) ? <h4 style={{color: 'blue'}}>{t('ongoing')}</h4> :
+                      <h4  style={{color: 'black'}}>{t('waiting')}</h4>);
               }
             },
             {

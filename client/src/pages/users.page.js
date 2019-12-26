@@ -222,14 +222,14 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
         <h1 className='page-title-text'>{t('all_accounts')}</h1>
         <Link>
           {showButtonAdd ?
-          <Button className='float-right-btn' type='primary' onClick={async () => {
-            await setShowModal(true);
-          }}>
-            <Icon type='user-add'/>
-            {
-              t('add_admin')
-            }
-          </Button> : null}
+            <Button className='float-right-btn' type='primary' onClick={async () => {
+              await setShowModal(true);
+            }}>
+              <Icon type='user-add'/>
+              {
+                t('add_admin')
+              }
+            </Button> : null}
         </Link>
         <Modal
           title="Add Admin"
@@ -301,9 +301,9 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
                             </Button>
                           </Popover>
                         </Link> :
-                          <Button className="waiting-for-verification" disabled>
-                            {t('waiting_for_verification')}
-                          </Button>
+                        <Button className="waiting-for-verification" disabled>
+                          {t('waiting_for_verification')}
+                        </Button>
                       }
                     </div>
                   )
@@ -395,9 +395,9 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
                             </Button>
                           </Popover>
                         </Link> :
-                          <Button className="waiting-for-verification" disabled>
-                            {t('waiting_for_verification')}
-                          </Button>
+                        <Button className="waiting-for-verification" disabled>
+                          {t('waiting_for_verification')}
+                        </Button>
                       }
                     </div>
                   )
@@ -434,102 +434,102 @@ const UsersPage = ({language, setshowLayout, setTab, isAddingUser, createUser}) 
           />
         </TabPane>
         {currUser.role === 0 ?
-        <TabPane tab={t('admin')} key="admins">
-          <Table
-            columns={
-              [
-                {
-                  title: t('full_name'),
-                  dataIndex: 'fullName',
-                  key: 'fullName'
-                },
-                {
-                  title: t('email'),
-                  dataIndex: 'email',
-                  key: 'email'
-                },
-                {
-                  title: t('phone_number'),
-                  dataIndex: 'phoneNumber',
-                  key: 'phoneNumber'
-                },
-                {
-                  title: t('role'),
-                  dataIndex: 'role',
-                  key: 'role',
-                  render: role => (
-                    <span>
-                      <Tag color={role === 1 ? 'geekblue' : 'green'} key={role}>
-                        {role===0 ? 'SUPERADMIN': 'ADMIN'}
-                      </Tag>
-                    </span>
-                  )
-                },
-                {
-                  title: t('status'),
-                  dataIndex: 'status',
-                  key: 'status',
-                  render: (status, record) => (
-                    <div>
-                      {
-                        record.role === 1 ?
-                          <Link className='action-btn'>
-                            <Popover content={(
-                              <span>{status === 1 ? t('lock') : t('unlock')}</span>
-                            )}>
-                              <Button className={!(status === 1) ? 'lock' : 'unlock'} onClick={async() => {
-                                record.status = status === 1 ? 0 : 1;
-                                await userApi.changeAdmin(record.email, record);
-                                loadData();
-                              }}>
-                                {!(status === 1) ? t('block') : t('active')}
-                              </Button>
-                            </Popover>
-                          </Link>
-                          :
-                          null
-                      }
-                    </div>
-                  )
-                },
-                {
-                  title: t('action'),
-                  key: 'action',
-                  dataIndex: 'email',
-                  render: (email, record) => (
-                    <div>
-                      <Link className='action-btn'>
-                        <Popover content={(
-                          <span>{t('detail')}</span>
-                        )}>
-                          <Button type='primary' onClick={async () => {
-                            await setUserDetail(record);
-                            await setShowDrawer(true);
-                          }}>
-                            <Icon type='eye'/>
-                          </Button>
-                        </Popover>
-                      </Link>
-                    </div>
-                  )
-                },
-              ]
-            }
+          <TabPane tab={t('admin')} key="admins">
+            <Table
+              columns={
+                [
+                  {
+                    title: t('full_name'),
+                    dataIndex: 'fullName',
+                    key: 'fullName'
+                  },
+                  {
+                    title: t('email'),
+                    dataIndex: 'email',
+                    key: 'email'
+                  },
+                  {
+                    title: t('phone_number'),
+                    dataIndex: 'phoneNumber',
+                    key: 'phoneNumber'
+                  },
+                  {
+                    title: t('role'),
+                    dataIndex: 'role',
+                    key: 'role',
+                    render: role => (
+                      <span>
+                        <Tag color={role === 1 ? 'geekblue' : 'green'} key={role}>
+                          {role===0 ? 'SUPERADMIN': 'ADMIN'}
+                        </Tag>
+                      </span>
+                    )
+                  },
+                  {
+                    title: t('status'),
+                    dataIndex: 'status',
+                    key: 'status',
+                    render: (status, record) => (
+                      <div>
+                        {
+                          record.role === 1 ?
+                            <Link className='action-btn'>
+                              <Popover content={(
+                                <span>{status === 1 ? t('lock') : t('unlock')}</span>
+                              )}>
+                                <Button className={!(status === 1) ? 'lock' : 'unlock'} onClick={async() => {
+                                  record.status = status === 1 ? 0 : 1;
+                                  await userApi.changeAdmin(record.email, record);
+                                  loadData();
+                                }}>
+                                  {!(status === 1) ? t('block') : t('active')}
+                                </Button>
+                              </Popover>
+                            </Link>
+                            :
+                            null
+                        }
+                      </div>
+                    )
+                  },
+                  {
+                    title: t('action'),
+                    key: 'action',
+                    dataIndex: 'email',
+                    render: (email, record) => (
+                      <div>
+                        <Link className='action-btn'>
+                          <Popover content={(
+                            <span>{t('detail')}</span>
+                          )}>
+                            <Button type='primary' onClick={async () => {
+                              await setUserDetail(record);
+                              await setShowDrawer(true);
+                            }}>
+                              <Icon type='eye'/>
+                            </Button>
+                          </Popover>
+                        </Link>
+                      </div>
+                    )
+                  },
+                ]
+              }
 
-            dataSource={
-              adminList ? adminList.map((user, index) => ({
-                fullName: user.fullName,
-                email: user.email,
-                phoneNumber: user.phoneNumber,
-                role: user.role,
-                status: user.status,
-                key: index
-              })):
-                null
-            }
-            scroll={{ y: 300}}
-          />
-        </TabPane> : null}
+              dataSource={
+                adminList ? adminList.map((user, index) => ({
+                  fullName: user.fullName,
+                  email: user.email,
+                  phoneNumber: user.phoneNumber,
+                  role: user.role,
+                  status: user.status,
+                  key: index
+                })):
+                  null
+              }
+              scroll={{ y: 300}}
+            />
+          </TabPane> : null}
       </Tabs>
       <Drawer
         title={t('User Detail')}
